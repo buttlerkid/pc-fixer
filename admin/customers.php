@@ -66,7 +66,7 @@ if (isset($_POST['update_customer'])) {
             }
         }
     }
-}
+
 
 // Handle password reset
 if (isset($_POST['reset_password'])) {
