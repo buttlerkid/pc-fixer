@@ -1,16 +1,18 @@
 # Prevent directory browsing
 Options -Indexes
 
-# Protect sensitive files
-<FilesMatch "^(database_schema\.sql|\.env)">
-    Order allow,deny
-    Deny from all
+# Protect sensitive files from direct access
+<FilesMatch "^(database_schema\.sql|\.env|config\.php|database\.php)$">
+    Require all denied
 </FilesMatch>
 
 # Protect config and includes directories
-RedirectMatch 403 ^/config/
-RedirectMatch 403 ^/includes/
-
-# Enable error pages (optional)
-ErrorDocument 404 /public/index.php
-ErrorDocument 403 /public/index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Block direct access to config directory
+    RewriteRule ^config/ - [F,L]
+    
+    # Block direct access to includes directory
+    RewriteRule ^includes/ - [F,L]
+</IfModule>
