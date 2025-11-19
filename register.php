@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/includes/auth.php';
 
 // If already logged in, redirect to dashboard
 if (isLoggedIn()) {
-    redirect(isAdmin() ? '../admin/dashboard.php' : '../customer/dashboard.php');
+    redirect(isAdmin() ? 'admin/dashboard.php' : 'customer/dashboard.php');
 }
 
 $error = '';
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result['success']) {
                 // Auto-login after registration
                 login($email, $password);
-                redirect('../customer/dashboard.php');
+                redirect('customer/dashboard.php');
             } else {
                 $error = $result['message'];
             }

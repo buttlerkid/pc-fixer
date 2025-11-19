@@ -1,4 +1,4 @@
 <?php
-// Root index.php - Redirect to login page
-header('Location: public/login.php');
+// Redirect to login page
+header('Location: login.php');
 exit;
