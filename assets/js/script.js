@@ -39,15 +39,63 @@ const body = document.body;
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
     body.classList.add('dark-mode');
+    document.documentElement.setAttribute('data-theme', 'dark'); // For modern theme
 }
 
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
 
+        // Toggle data-theme attribute for modern theme compatibility
+        if (body.classList.contains('dark-mode')) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+
         // Save theme preference
         const theme = body.classList.contains('dark-mode') ? 'dark' : 'light';
         localStorage.setItem('theme', theme);
+    });
+}
+
+// Style/Theme Switcher (Default vs Modern)
+const styleToggle = document.querySelector('.style-toggle');
+if (styleToggle) {
+    styleToggle.addEventListener('click', async () => {
+        // Determine current theme from CSS link or cookie (simplified: just toggle)
+        // We can check the current CSS file to know which one is active, or just ask the server
+        // But since we want to toggle, we can try to read a cookie or just send 'toggle' if the API supported it.
+        // For now, let's check the link tag.
+        const linkTag = document.querySelector('link[href*="assets/css/"]');
+        let currentStyle = 'default';
+        if (linkTag && linkTag.href.includes('modern.css')) {
+            currentStyle = 'modern';
+        }
+
+        const newStyle = currentStyle === 'default' ? 'modern' : 'default';
+
+        try {
+            // Determine the API path based on current location
+            // If we are in /customer/ or /admin/, we need to go up one level
+            const isInSubdir = window.location.pathname.includes('/customer/') || window.location.pathname.includes('/admin/');
+            const apiPath = isInSubdir ? '../api/switch_theme.php' : 'api/switch_theme.php';
+
+            const response = await fetch(apiPath, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ theme: newStyle })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error switching theme:', error);
+        }
     });
 }
 

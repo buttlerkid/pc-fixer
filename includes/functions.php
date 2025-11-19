@@ -144,7 +144,7 @@ function getFileIcon($filename) {
 /**
  * Format file size
  * @param int $bytes File size in bytes
- * @return string Formatted file size
+ * @return string Truncated text
  */
 function formatFileSize($bytes) {
     if ($bytes >= 1073741824) {
@@ -169,4 +169,55 @@ function truncate($text, $length = 100) {
         return $text;
     }
     return substr($text, 0, $length) . '...';
+}
+
+/**
+ * Get a setting value from the database
+ */
+function getSetting($key, $default = null) {
+    $db = new Database();
+    $conn = $db->connect();
+    
+    $stmt = $conn->prepare("SELECT setting_value FROM settings WHERE setting_key = ?");
+    $stmt->execute([$key]);
+    $result = $stmt->fetch();
+    
+    return $result ? $result['setting_value'] : $default;
+}
+
+/**
+ * Update a setting value in the database
+ */
+function updateSetting($key, $value) {
+    $db = new Database();
+    $conn = $db->connect();
+    
+    // Check if setting exists
+    $stmt = $conn->prepare("SELECT id FROM settings WHERE setting_key = ?");
+    $stmt->execute([$key]);
+    
+    if ($stmt->fetch()) {
+        $stmt = $conn->prepare("UPDATE settings SET setting_value = ? WHERE setting_key = ?");
+        return $stmt->execute([$value, $key]);
+    } else {
+        $stmt = $conn->prepare("INSERT INTO settings (setting_key, setting_value) VALUES (?, ?)");
+        return $stmt->execute([$key, $value]);
+    }
+}
+
+/**
+ * Get the current theme CSS file path
+ * @param string $relativePath Relative path to the assets directory (e.g. '../')
+ */
+function getThemeCss($relativePath = '') {
+    // Check cookie first, then session, then database setting, then default
+    $theme = $_COOKIE['theme'] ?? $_SESSION['theme'] ?? getSetting('site_theme', 'default');
+    
+    // Validate theme to prevent path traversal or invalid values
+    $validThemes = ['default', 'modern'];
+    if (!in_array($theme, $validThemes)) {
+        $theme = 'default';
+    }
+    
+    return $relativePath . ($theme === 'modern' ? 'assets/css/modern.css' : 'assets/css/styles.css');
 }

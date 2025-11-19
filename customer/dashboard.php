@@ -36,7 +36,7 @@ $recentTickets = $stmt->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Dashboard - LocalTechFix</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="<?= getThemeCss('../') ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .dashboard {
@@ -203,6 +203,12 @@ $recentTickets = $stmt->fetchAll();
                         <a href="create-ticket.php"><i class="fa-solid fa-plus"></i> New Ticket</a>
                         <a href="../index.php"><i class="fa-solid fa-globe"></i> Home</a>
                         <a href="../logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
+                        <button class="style-toggle" aria-label="Switch Theme" title="Switch Theme" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
+                            <i class="fa-solid fa-palette"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -287,5 +293,6 @@ $recentTickets = $stmt->fetchAll();
             <?php endif; ?>
         </div>
     </div>
+    <script src="../assets/js/script.js"></script>
 </body>
 </html>

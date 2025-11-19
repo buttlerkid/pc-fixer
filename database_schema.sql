@@ -71,3 +71,15 @@ ON DUPLICATE KEY UPDATE email=email;
 INSERT INTO users (email, name, password, role) 
 VALUES ('customer@test.com', 'Test Customer', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'customer')
 ON DUPLICATE KEY UPDATE email=email;
+
+-- Settings table
+CREATE TABLE IF NOT EXISTS settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    setting_key VARCHAR(50) NOT NULL UNIQUE,
+    setting_value TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Default settings
+INSERT INTO settings (setting_key, setting_value) VALUES ('site_theme', 'default');
