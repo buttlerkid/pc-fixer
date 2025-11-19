@@ -63,6 +63,32 @@ if (isset($_POST['update_customer'])) {
                     $error = "Failed to update customer";
                 }
             }
+    }
+}
+
+// Handle password reset
+if (isset($_POST['reset_password'])) {
+    if (!validateCsrfToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid request';
+    } else {
+        $customerId = (int)$_POST['customer_id'];
+        $newPassword = trim($_POST['new_password']);
+        $confirmPassword = trim($_POST['confirm_password']);
+        
+        if (empty($newPassword) || empty($confirmPassword)) {
+            $error = "Both password fields are required";
+        } elseif (strlen($newPassword) < 6) {
+            $error = "Password must be at least 6 characters";
+        } elseif ($newPassword !== $confirmPassword) {
+            $error = "Passwords do not match";
+        } else {
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ? AND role = 'customer'");
+            if ($stmt->execute([$hashedPassword, $customerId])) {
+                $success = "Password reset successfully";
+            } else {
+                $error = "Failed to reset password";
+            }
         }
     }
 }
@@ -210,6 +236,9 @@ $customers = $stmt->fetchAll();
                                             <button onclick="editCustomer(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>', '<?= htmlspecialchars($customer['email'], ENT_QUOTES) ?>')" class="btn btn-primary btn-sm" title="Edit">
                                                 <i class="fa-solid fa-edit"></i>
                                             </button>
+                                            <button onclick="resetPassword(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>')" class="btn btn-secondary btn-sm" style="background: #fef3c7; color: #92400e;" title="Reset Password">
+                                                <i class="fa-solid fa-key"></i>
+                                            </button>
                                             <a href="tickets.php?customer=<?= $customer['id'] ?>" class="btn btn-secondary btn-sm" title="View Tickets">
                                                 <i class="fa-solid fa-ticket"></i>
                                             </a>
@@ -301,6 +330,44 @@ $customers = $stmt->fetchAll();
         </div>
     </div>
 
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Customer Password</h2>
+                <button class="close-modal" onclick="closeModal('resetPasswordModal')">&times;</button>
+            </div>
+            <form method="POST" action="">
+                <?= csrfField() ?>
+                <input type="hidden" name="customer_id" id="reset_customer_id">
+                <input type="hidden" name="reset_password" value="1">
+                
+                <p style="margin-bottom: 1.5rem; color: var(--light-text);">
+                    Resetting password for: <strong id="reset_customer_name"></strong>
+                </p>
+                
+                <div class="form-group">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" required minlength="6" placeholder="Minimum 6 characters">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required minlength="6" placeholder="Re-enter password">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-key"></i> Reset Password
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('resetPasswordModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function viewCustomer(id) {
             document.getElementById('viewModal').classList.add('active');
@@ -334,6 +401,14 @@ $customers = $stmt->fetchAll();
             document.getElementById('deleteModalContent').querySelector('p').textContent = 
                 `Are you sure you want to delete "${name}"? This action cannot be undone.`;
             document.getElementById('deleteModal').classList.add('active');
+        }
+        
+        function resetPassword(id, name) {
+            document.getElementById('reset_customer_id').value = id;
+            document.getElementById('reset_customer_name').textContent = name;
+            document.getElementById('new_password').value = '';
+            document.getElementById('confirm_password').value = '';
+            document.getElementById('resetPasswordModal').classList.add('active');
         }
         
         function closeModal(modalId) {
