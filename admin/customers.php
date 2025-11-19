@@ -63,6 +63,8 @@ if (isset($_POST['update_customer'])) {
                     $error = "Failed to update customer";
                 }
             }
+            }
+        }
     }
 }
 
