@@ -1,4 +1,4 @@
 <?php
-// Redirect to login page
-header('Location: login.php');
+// Redirect to homepage
+header('Location: index.html');
 exit;
