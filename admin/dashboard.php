@@ -113,11 +113,13 @@ $recentTickets = $stmt->fetchAll();
                     <div class="stat-label">Completed</div>
                 </div>
 
-                <div class="stat-card secondary">
-                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-                    <div class="stat-number"><?= $totalCustomers ?></div>
-                    <div class="stat-label">Customers</div>
-                </div>
+                <a href="customers.php" style="text-decoration: none; color: inherit;">
+                    <div class="stat-card secondary" style="cursor: pointer; transition: transform 0.2s;">
+                        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-number"><?= $totalCustomers ?></div>
+                        <div class="stat-label">Customers</div>
+                    </div>
+                </a>
             </div>
 
             <h2 style="color: var(--secondary-color); margin-bottom: 1.5rem;">Recent Tickets</h2>
