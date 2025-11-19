@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (in_array($theme, ['default', 'modern'])) {
         // Set cookie for 30 days
-        setcookie('theme', $theme, time() + (86400 * 30), "/");
-        $_SESSION['theme'] = $theme;
+        setcookie('site_theme', $theme, time() + (86400 * 30), "/");
+        $_SESSION['site_theme'] = $theme;
         
         echo json_encode(['success' => true, 'theme' => $theme]);
     } else {

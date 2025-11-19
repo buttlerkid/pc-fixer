@@ -207,17 +207,18 @@ function updateSetting($key, $value) {
 
 /**
  * Get the current theme CSS file path
- * @param string $relativePath Relative path to the assets directory (e.g. '../')
  */
-function getThemeCss($relativePath = '') {
-    // Check cookie first, then session, then database setting, then default
-    $theme = $_COOKIE['theme'] ?? $_SESSION['theme'] ?? getSetting('site_theme', 'default');
+function getThemeCss() {
+    $theme = getSetting('site_theme', 'default');
     
-    // Validate theme to prevent path traversal or invalid values
-    $validThemes = ['default', 'modern'];
-    if (!in_array($theme, $validThemes)) {
-        $theme = 'default';
+    // Check for cookie override
+    if (isset($_COOKIE['site_theme'])) {
+        $cookieTheme = $_COOKIE['site_theme'];
+        if (in_array($cookieTheme, ['default', 'modern'])) {
+            $theme = $cookieTheme;
+        }
     }
     
-    return $relativePath . ($theme === 'modern' ? 'assets/css/modern.css' : 'assets/css/styles.css');
+    $cssFile = $theme === 'modern' ? 'assets/css/modern.css' : 'assets/css/styles.css';
+    return $cssFile . '?v=' . time();
 }
