@@ -6,7 +6,7 @@ require_once __DIR__ . '/../config/database.php';
 requireAdmin();
 
 $db = new Database();
-$conn = $db->\connect();
+$conn = $db->connect();
 
 $success = '';
 $error = '';
