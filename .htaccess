@@ -1,0 +1,16 @@
+# Prevent directory browsing
+Options -Indexes
+
+# Protect sensitive files
+<FilesMatch "^(database_schema\.sql|\.env)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect config and includes directories
+RedirectMatch 403 ^/config/
+RedirectMatch 403 ^/includes/
+
+# Enable error pages (optional)
+ErrorDocument 404 /public/index.php
+ErrorDocument 403 /public/index.php
