@@ -1,6 +1,20 @@
 <?php
 require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/config/database.php';
+
+// Get statistics for the stats section
+$database = new Database();
+$db = $database->connect();
+
+// Get total customers count
+$stmt = $db->prepare("SELECT COUNT(*) as total FROM users WHERE role = 'customer'");
+$stmt->execute();
+$customerCount = $stmt->fetch()['total'];
+
+// Get completed tickets count
+$stmt = $db->prepare("SELECT COUNT(*) as total FROM tickets WHERE status = 'completed'");
+$stmt->execute();
+$completedTickets = $stmt->fetch()['total'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -67,6 +81,46 @@ require_once __DIR__ . '/config/database.php';
             <div class="hero-image">
                 <div class="image-placeholder">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="stats" class="stats section-padding bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Track Record</h2>
+                <p>Numbers that speak for themselves.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="stat-number"><?= number_format($customerCount) ?>+</div>
+                    <div class="stat-label">Customers Helped</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                    <div class="stat-number"><?= number_format($completedTickets) ?>+</div>
+                    <div class="stat-label">Tickets Resolved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Hours Avg Response</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
                 </div>
             </div>
         </div>

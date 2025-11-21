@@ -669,19 +669,6 @@ body.dark-mode .form-group label {
 .file-upload-wrapper input[type="file"] {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* Footer */
-.footer {
-    background: var(--secondary-color);
-    color: white;
-    padding: 4rem 0 2rem;
-    text-align: center;
 }
 
 .footer-brand {
