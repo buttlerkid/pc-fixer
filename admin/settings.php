@@ -48,7 +48,6 @@ $smtpPort = getSetting('smtp_port', '587');
 $smtpUser = getSetting('smtp_user', '');
 $smtpFromEmail = getSetting('smtp_from_email', '');
 $smtpFromName = getSetting('smtp_from_name', 'LocalTechFix Support');
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
     <style>

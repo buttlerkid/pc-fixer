@@ -107,7 +107,6 @@ if ($search) {
     $stmt = $conn->query("SELECT u.*, COUNT(t.id) as ticket_count FROM users u LEFT JOIN tickets t ON u.id = t.user_id WHERE u.role = 'customer' GROUP BY u.id ORDER BY u.created_at DESC");
 }
 $customers = $stmt->fetchAll();
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
     <style>

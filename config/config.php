@@ -10,7 +10,7 @@ define('SITE_URL', 'http://localhost/Proj2');
 define('BASE_PATH', dirname(__DIR__));
 
 // Directory paths
-define('UPLOAD_DIR', BASE_PATH . '/public/assets/uploads/');
+define('UPLOAD_DIR', BASE_PATH . '/assets/uploads/');
 define('MAX_FILE_SIZE', 5242880); // 5MB in bytes
 define('ALLOWED_FILE_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'txt', 'log']);
 

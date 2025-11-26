@@ -27,7 +27,6 @@ $totalCustomers = $stmt->fetch()['total'];
 // Get recent tickets
 $stmt = $conn->query("SELECT t.*, u.name as customer_name FROM tickets t JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC LIMIT 10");
 $recentTickets = $stmt->fetchAll();
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
 

@@ -20,7 +20,6 @@ if (isset($_POST['delete_id'])) {
 // Get Articles
 $stmt = $conn->query("SELECT * FROM articles ORDER BY created_at DESC");
 $articles = $stmt->fetchAll();
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
     <style>

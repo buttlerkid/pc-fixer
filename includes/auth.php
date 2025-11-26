@@ -123,7 +123,10 @@ function isAdmin() {
  * Require user to be logged in (redirect if not)
  * @param string $redirect Redirect URL if not logged in
  */
-function requireLogin($redirect = '/public/login.php') {
+function requireLogin($redirect = null) {
+    if ($redirect === null) {
+        $redirect = SITE_URL . '/login.php';
+    }
     if (!isLoggedIn()) {
         header('Location: ' . $redirect);
         exit;
@@ -134,8 +137,11 @@ function requireLogin($redirect = '/public/login.php') {
  * Require user to be admin (redirect if not)
  * @param string $redirect Redirect URL if not admin
  */
-function requireAdmin($redirect = '/public/index.php') {
+function requireAdmin($redirect = null) {
     requireLogin();
+    if ($redirect === null) {
+        $redirect = SITE_URL . '/index.php';
+    }
     if (!isAdmin()) {
         header('Location: ' . $redirect);
         exit;

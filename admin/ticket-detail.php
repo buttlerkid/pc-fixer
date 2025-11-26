@@ -91,7 +91,6 @@ $messages = $stmt->fetchAll();
 $stmt = $conn->prepare("SELECT * FROM files WHERE ticket_id = ? ORDER BY uploaded_at DESC");
 $stmt->execute([$ticketId]);
 $files = $stmt->fetchAll();
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
     <style>

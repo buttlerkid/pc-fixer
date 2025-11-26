@@ -31,7 +31,6 @@ $query .= " ORDER BY t.created_at DESC";
 $stmt = $conn->prepare($query);
 $stmt->execute($params);
 $tickets = $stmt->fetchAll();
-?>
 require_once __DIR__ . '/includes/header.php';
 ?>
             <style>
