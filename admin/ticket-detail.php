@@ -19,68 +19,7 @@ if (!$ticket) {
     redirect('tickets.php');
 }
 
-// Handle status/priority update
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
-    if (validateCsrfToken($_POST['csrf_token'] ?? '')) {
-        $status = $_POST['status'] ?? $ticket['status'];
-        $priority = $_POST['priority'] ?? $ticket['priority'];
-        
-        $stmt = $conn->prepare("UPDATE tickets SET status = ?, priority = ? WHERE id = ?");
-        $stmt->execute([$status, $priority, $ticketId]);
-        
-        // Send email to customer
-        try {
-            $customerEmail = $ticket['customer_email'];
-            $subject = "Ticket Updated: #$ticketId - " . $ticket['title'];
-            
-            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-            $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
-            
-            $body = "<h2>Ticket Updated</h2>
-                     <p>Your ticket status has been updated.</p>
-                     <p><strong>New Status:</strong> " . ucfirst($status) . "</p>
-                     <p><strong>New Priority:</strong> " . ucfirst($priority) . "</p>
-                     <p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
-                     
-            sendEmail($customerEmail, $subject, $body);
-        } catch (Exception $e) {
-            error_log("Email notification failed: " . $e->getMessage());
-        }
-        
-        redirect('ticket-detail.php?id=' . $ticketId);
-    }
-}
-
-// Handle new message
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
-    if (validateCsrfToken($_POST['csrf_token'] ?? '')) {
-        $content = sanitize($_POST['message']);
-        if (!empty($content)) {
-            $stmt = $conn->prepare("INSERT INTO messages (ticket_id, author_id, content, is_admin) VALUES (?, ?, ?, 1)");
-            $stmt->execute([$ticketId, $adminId, $content]);
-            
-            // Send email to customer
-            try {
-                $customerEmail = $ticket['customer_email'];
-                $subject = "New Reply on Ticket: #$ticketId - " . $ticket['title'];
-                
-                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-                $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
-                
-                $body = "<h2>New Reply</h2>
-                         <p>An admin has replied to your ticket.</p>
-                         <p><strong>Message:</strong><br>" . nl2br($content) . "</p>
-                         <p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
-                         
-                sendEmail($customerEmail, $subject, $body);
-            } catch (Exception $e) {
-                error_log("Email notification failed: " . $e->getMessage());
-            }
-            
-            redirect('ticket-detail.php?id=' . $ticketId);
-        }
-    }
-}
+// POST handling moved to ajax_actions.php
 
 // Get messages
 $stmt = $conn->prepare("SELECT m.*, u.name as author_name FROM messages m JOIN users u ON m.author_id = u.id WHERE m.ticket_id = ? ORDER BY m.created_at ASC");
@@ -165,21 +104,25 @@ require_once __DIR__ . '/includes/header.php';
                             <p style="color: var(--light-text); text-align: center; padding: 2rem;">No messages yet</p>
                         <?php else: ?>
                             <?php foreach ($messages as $message): ?>
-                                <div class="message <?= $message['is_admin'] ? 'admin' : '' ?>">
+                                <div class="message <?= $message['is_admin'] ? 'admin' : '' ?>" id="message-<?= $message['id'] ?>">
                                     <div class="message-header">
                                         <span class="message-author">
                                             <?= $message['is_admin'] ? '<i class="fa-solid fa-shield-halved"></i> ' : '' ?>
                                             <?= htmlspecialchars($message['author_name']) ?>
                                         </span>
-                                        <span class="message-time"><?= formatDate($message['created_at']) ?></span>
+                                        <div>
+                                            <span class="message-time" style="margin-right: 0.5rem;"><?= formatDate($message['created_at']) ?></span>
+                                            <button type="button" class="btn btn-danger delete-message-btn" data-message-id="<?= $message['id'] ?>" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; line-height: 1; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div><?= nl2br(htmlspecialchars($message['content'])) ?></div>
                                 </div>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
-                        <form method="POST" style="margin-top: 2rem;">
-                            <?= csrfField() ?>
+                        <form id="reply-form" style="margin-top: 2rem;">
                             <div class="form-group">
                                 <label for="message">Reply to Customer</label>
                                 <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
@@ -195,10 +138,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="ticket-sidebar">
                         <h3 style="color: var(--secondary-color); margin-bottom: 1.5rem;">Ticket Management</h3>
                         
-                        <form method="POST">
-                            <?= csrfField() ?>
-                            <input type="hidden" name="update_ticket" value="1">
-                            
+                        <form id="update-form">
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select id="status" name="status" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
@@ -228,15 +168,172 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
 
+
+
 <script>
+    console.log('Script loaded! TICKET_ID:', <?= $ticketId ?>);
+    const TICKET_ID = <?= $ticketId ?>;
+    const CSRF_TOKEN = '<?= $_SESSION['csrf_token'] ?>';
+
+    // Helper for AJAX requests
+    async function apiRequest(action, data = {}, options = {}) {
+        try {
+            const response = await fetch('ajax_actions.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action,
+                    csrf_token: CSRF_TOKEN,
+                    ticket_id: TICKET_ID,
+                    ...data
+                }),
+                ...options
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('API Error:', error);
+            return { success: false, message: 'Network error' };
+        }
+    }
+
+    // Delete Message Logic
+    async function handleDelete(messageId) {
+        console.log('handleDelete called for ID:', messageId);
+        
+        // Find the button to update its state
+        const btn = document.querySelector(`.delete-message-btn[data-message-id="${messageId}"]`);
+        let originalContent = '';
+        if (btn) {
+            originalContent = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+        }
+
+        // Confirmation removed as per user request
+        // if (!window.confirm('Are you sure you want to delete this message?')) { ... }
+
+        try {
+            // Add timeout to fetch
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+            const result = await apiRequest('delete_message', { message_id: messageId }, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            
+            console.log('API Result:', result);
+            
+            if (result.success) {
+                const messageEl = document.getElementById(`message-${messageId}`);
+                if (messageEl) {
+                    messageEl.style.opacity = '0';
+                    setTimeout(() => messageEl.remove(), 300);
+                }
+            } else {
+                alert(result.message || 'Failed to delete message');
+                if (btn) {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }
+            }
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('An error occurred while deleting.');
+            if (btn) {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Event Delegation for Delete Buttons
+        document.body.addEventListener('click', function(e) {
+            console.log('Click target:', e.target.tagName, e.target.className);
+            const btn = e.target.closest('.delete-message-btn');
+            console.log('Resolved button:', btn);
+            if (btn) {
+                e.preventDefault();
+                const messageId = btn.dataset.messageId;
+                console.log('Message ID:', messageId);
+                
+                if (messageId) {
+                    console.log('Calling handleDelete...');
+                    handleDelete(messageId);
+                }
+            }
+        });
+
+        // Handle Reply Form
+        const replyForm = document.getElementById('reply-form');
         const messageInput = document.getElementById('message');
-        if (messageInput) {
+        const messagesContainer = document.querySelector('.messages');
+
+        if (replyForm) {
+            replyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const content = messageInput.value.trim();
+                if (!content) return;
+
+                const submitBtn = replyForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+                const result = await apiRequest('send_message', { message: content });
+
+                if (result.success) {
+                    messageInput.value = '';
+                    // Append new message before the form
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = result.html;
+                    replyForm.parentNode.insertBefore(tempDiv.firstElementChild, replyForm);
+                    
+                    // Remove "No messages yet" if it exists
+                    const noMsg = messagesContainer.querySelector('p[style*="text-align: center"]');
+                    if (noMsg) noMsg.remove();
+                } else {
+                    alert(result.message || 'Failed to send message');
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            });
+
+            // Enter to Send
             messageInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    this.form.submit();
+                    replyForm.dispatchEvent(new Event('submit'));
                 }
+            });
+        }
+
+        // Handle Ticket Update Form
+        const updateForm = document.getElementById('update-form');
+        if (updateForm) {
+            updateForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const status = document.getElementById('status').value;
+                const priority = document.getElementById('priority').value;
+                const submitBtn = updateForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+
+                const result = await apiRequest('update_ticket', { status, priority });
+
+                if (result.success) {
+                    alert('Ticket updated successfully');
+                } else {
+                    alert(result.message || 'Failed to update ticket');
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
             });
         }
     });
