@@ -228,4 +228,17 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageInput = document.getElementById('message');
+        if (messageInput) {
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.form.submit();
+                }
+            });
+        }
+    });
+</script>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
