@@ -27,6 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
         
         $stmt = $conn->prepare("UPDATE tickets SET status = ?, priority = ? WHERE id = ?");
         $stmt->execute([$status, $priority, $ticketId]);
+        
+        // Send email to customer
+        try {
+            $customerEmail = $ticket['customer_email'];
+            $subject = "Ticket Updated: #$ticketId - " . $ticket['title'];
+            
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+            $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
+            
+            $body = "<h2>Ticket Updated</h2>
+                     <p>Your ticket status has been updated.</p>
+                     <p><strong>New Status:</strong> " . ucfirst($status) . "</p>
+                     <p><strong>New Priority:</strong> " . ucfirst($priority) . "</p>
+                     <p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
+                     
+            sendEmail($customerEmail, $subject, $body);
+        } catch (Exception $e) {
+            error_log("Email notification failed: " . $e->getMessage());
+        }
+        
         redirect('ticket-detail.php?id=' . $ticketId);
     }
 }
@@ -38,6 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         if (!empty($content)) {
             $stmt = $conn->prepare("INSERT INTO messages (ticket_id, author_id, content, is_admin) VALUES (?, ?, ?, 1)");
             $stmt->execute([$ticketId, $adminId, $content]);
+            
+            // Send email to customer
+            try {
+                $customerEmail = $ticket['customer_email'];
+                $subject = "New Reply on Ticket: #$ticketId - " . $ticket['title'];
+                
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+                $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
+                
+                $body = "<h2>New Reply</h2>
+                         <p>An admin has replied to your ticket.</p>
+                         <p><strong>Message:</strong><br>" . nl2br($content) . "</p>
+                         <p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
+                         
+                sendEmail($customerEmail, $subject, $body);
+            } catch (Exception $e) {
+                error_log("Email notification failed: " . $e->getMessage());
+            }
+            
             redirect('ticket-detail.php?id=' . $ticketId);
         }
     }

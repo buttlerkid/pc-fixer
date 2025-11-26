@@ -33,6 +33,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     uploadFile($_FILES['file'], $ticketId);
                 }
                 
+                // Send Email Notification to Admin
+                try {
+                    $adminEmail = getSetting('smtp_from_email');
+                    $subject = "New Ticket Created: #$ticketId - $title";
+                    
+                    // Construct base URL dynamically
+                    $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+                    $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
+                    
+                    $body = "<h2>New Ticket Created</h2>
+                             <p><strong>Ticket ID:</strong> #$ticketId</p>
+                             <p><strong>Customer:</strong> " . htmlspecialchars($_SESSION['user_name']) . "</p>
+                             <p><strong>Title:</strong> " . htmlspecialchars($title) . "</p>
+                             <p><strong>Priority:</strong> " . ucfirst($priority) . "</p>
+                             <p><strong>Description:</strong><br>" . nl2br(htmlspecialchars($description)) . "</p>
+                             <p><a href='" . $baseUrl . "/admin/ticket-detail.php?id=$ticketId'>View Ticket in Admin Panel</a></p>";
+                             
+                    sendEmail($adminEmail, $subject, $body);
+                } catch (Exception $e) {
+                    // Don't block ticket creation if email fails
+                    error_log("Email notification failed: " . $e->getMessage());
+                }
+                
                 $success = 'Ticket created successfully!';
                 header('Location: ticket-detail.php?id=' . $ticketId);
                 exit;

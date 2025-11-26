@@ -222,3 +222,34 @@ function getThemeCss() {
     $cssFile = $theme === 'modern' ? 'assets/css/modern.css' : 'assets/css/styles.css';
     return $cssFile . '?v=' . time();
 }
+
+/**
+ * Send an email using SimpleSMTP
+ * @param string $to Recipient email
+ * @param string $subject Email subject
+ * @param string $body Email body (HTML)
+ * @return array Result with success status and message
+ */
+function sendEmail($to, $subject, $body) {
+    require_once 'SimpleSMTP.php';
+    
+    $enabled = getSetting('email_enabled', '0');
+    if ($enabled !== '1') {
+        return ['success' => false, 'message' => 'Email sending is disabled'];
+    }
+    
+    $host = getSetting('smtp_host');
+    $port = getSetting('smtp_port');
+    $user = getSetting('smtp_user');
+    $pass = getSetting('smtp_pass');
+    $fromEmail = getSetting('smtp_from_email');
+    $fromName = getSetting('smtp_from_name');
+    
+    $smtp = new SimpleSMTP($host, $port, $user, $pass);
+    
+    if ($smtp->send($to, $subject, $body, $fromEmail, $fromName)) {
+        return ['success' => true, 'message' => 'Email sent successfully'];
+    } else {
+        return ['success' => false, 'message' => 'Failed to send email. Check logs.'];
+    }
+}

@@ -82,4 +82,12 @@ CREATE TABLE IF NOT EXISTS settings (
 );
 
 -- Default settings
-INSERT INTO settings (setting_key, setting_value) VALUES ('site_theme', 'default');
+INSERT INTO settings (setting_key, setting_value) VALUES 
+('site_theme', 'default'),
+('email_enabled', '0'),
+('smtp_host', 'smtp.example.com'),
+('smtp_port', '587'),
+('smtp_user', ''),
+('smtp_pass', ''),
+('smtp_from_email', 'noreply@localtechfix.com'),
+('smtp_from_name', 'LocalTechFix Support');

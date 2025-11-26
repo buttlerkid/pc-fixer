@@ -39,6 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         if (!empty($content)) {
             $stmt = $conn->prepare("INSERT INTO messages (ticket_id, author_id, content, is_admin) VALUES (?, ?, ?, 0)");
             $stmt->execute([$ticketId, $userId, $content]);
+            
+            // Send email to admin
+            try {
+                $adminEmail = getSetting('smtp_from_email');
+                $subject = "New Reply on Ticket: #$ticketId - " . $ticket['title'];
+                
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
+                $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
+                
+                $body = "<h2>New Reply</h2>
+                         <p>Customer <strong>" . htmlspecialchars($_SESSION['user_name']) . "</strong> has replied to a ticket.</p>
+                         <p><strong>Message:</strong><br>" . nl2br($content) . "</p>
+                         <p><a href='" . $baseUrl . "/admin/ticket-detail.php?id=$ticketId'>View Ticket in Admin Panel</a></p>";
+                         
+                sendEmail($adminEmail, $subject, $body);
+            } catch (Exception $e) {
+                error_log("Email notification failed: " . $e->getMessage());
+            }
+            
             redirect('ticket-detail.php?id=' . $ticketId);
         }
     }
