@@ -66,6 +66,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a href="customers.php" class="<?= $currentPage === 'customers.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-users"></i> Customers
                         </a>
+                        <a href="invoices.php" class="<?= $currentPage === 'invoices.php' || $currentPage === 'invoice-editor.php' || $currentPage === 'invoice-view.php' ? 'active' : '' ?>">
+                            <i class="fa-solid fa-file-invoice-dollar"></i> Invoices
+                        </a>
                         <a href="articles.php" class="<?= $currentPage === 'articles.php' || $currentPage === 'article-editor.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-book"></i> Knowledge Base
                         </a>

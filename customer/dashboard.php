@@ -200,6 +200,7 @@ $recentTickets = $stmt->fetchAll();
                     <div class="nav-links">
                         <a href="dashboard.php"><i class="fa-solid fa-home"></i> Dashboard</a>
                         <a href="tickets.php"><i class="fa-solid fa-ticket"></i> My Tickets</a>
+                        <a href="invoices.php"><i class="fa-solid fa-file-invoice-dollar"></i> My Invoices</a>
                         <a href="create-ticket.php"><i class="fa-solid fa-plus"></i> New Ticket</a>
                         <a href="../knowledge-base.php"><i class="fa-solid fa-book"></i> Knowledge Base</a>
                         <a href="../index.php"><i class="fa-solid fa-globe"></i> Home</a>
