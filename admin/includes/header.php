@@ -75,15 +75,23 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a href="settings.php" class="<?= $currentPage === 'settings.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-cog"></i> Settings
                         </a>
-                        <a href="../index.php" target="_blank">
-                            <i class="fa-solid fa-globe"></i> Site
-                        </a>
-                        <a href="profile.php" class="<?= $currentPage === 'profile.php' ? 'active' : '' ?>">
-                            <i class="fa-solid fa-user"></i> Profile
-                        </a>
-                        <a href="../logout.php">
-                            <i class="fa-solid fa-right-from-bracket"></i> Logout
-                        </a>
+                        
+                        <div class="dropdown">
+                            <div class="dropdown-trigger" style="color: var(--white); font-weight: 500; opacity: 0.8;">
+                                <i class="fa-solid fa-user-circle"></i> Account <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <div class="dropdown-content">
+                                <a href="profile.php">
+                                    <i class="fa-solid fa-user"></i> Profile
+                                </a>
+                                <a href="../index.php" target="_blank">
+                                    <i class="fa-solid fa-globe"></i> View Site
+                                </a>
+                                <a href="../logout.php" style="color: #ef4444 !important;">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

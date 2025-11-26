@@ -68,15 +68,24 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a href="../knowledge-base.php">
                             <i class="fa-solid fa-book"></i> Knowledge Base
                         </a>
-                        <a href="profile.php" class="<?= $currentPage === 'profile.php' ? 'active' : '' ?>">
-                            <i class="fa-solid fa-user"></i> Profile
-                        </a>
-                        <a href="../index.php">
-                            <i class="fa-solid fa-globe"></i> Home
-                        </a>
-                        <a href="../logout.php">
-                            <i class="fa-solid fa-right-from-bracket"></i> Logout
-                        </a>
+                        
+                        <div class="dropdown">
+                            <div class="dropdown-trigger" style="color: var(--text-color); font-weight: 500;">
+                                <i class="fa-solid fa-user-circle"></i> Account <i class="fa-solid fa-caret-down"></i>
+                            </div>
+                            <div class="dropdown-content">
+                                <a href="profile.php">
+                                    <i class="fa-solid fa-user"></i> Profile
+                                </a>
+                                <a href="../index.php">
+                                    <i class="fa-solid fa-globe"></i> Home
+                                </a>
+                                <a href="../logout.php" style="color: #ef4444 !important;">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+
                         <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
                             <i class="fa-solid fa-moon"></i>
                         </button>
