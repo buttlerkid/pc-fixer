@@ -78,6 +78,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a href="../index.php" target="_blank">
                             <i class="fa-solid fa-globe"></i> Site
                         </a>
+                        <a href="profile.php" class="<?= $currentPage === 'profile.php' ? 'active' : '' ?>">
+                            <i class="fa-solid fa-user"></i> Profile
+                        </a>
                         <a href="../logout.php">
                             <i class="fa-solid fa-right-from-bracket"></i> Logout
                         </a>
