@@ -28,71 +28,19 @@ $totalCustomers = $stmt->fetch()['total'];
 $stmt = $conn->query("SELECT t.*, u.name as customer_name FROM tickets t JOIN users u ON t.user_id = u.id ORDER BY t.created_at DESC LIMIT 10");
 $recentTickets = $stmt->fetchAll();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - LocalTechFix</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .dashboard { min-height: 100vh; background-color: var(--bg-color); }
-        .dashboard-header { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 1.5rem 0; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
-        .dashboard-nav { display: flex; justify-content: space-between; align-items: center; }
-        .dashboard-nav .logo { font-size: 1.5rem; font-weight: 700; color: var(--white); }
-        .dashboard-nav .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .dashboard-nav .nav-links a { color: var(--white); font-weight: 500; opacity: 0.9; }
-        .dashboard-nav .nav-links a:hover { opacity: 1; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-card { background: var(--white); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
-        .stat-card .stat-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
-        .stat-card.primary .stat-icon { background: #eff6ff; color: var(--primary-color); }
-        .stat-card.warning .stat-icon { background: #fef3c7; color: #f59e0b; }
-        .stat-card.info .stat-icon { background: #dbeafe; color: #3b82f6; }
-        .stat-card.success .stat-icon { background: #d1fae5; color: #10b981; }
-        .stat-card.secondary .stat-icon { background: #e5e7eb; color: #6b7280; }
-        .stat-card .stat-number { font-size: 2rem; font-weight: 700; color: var(--secondary-color); }
-        .stat-card .stat-label { color: var(--light-text); font-size: 0.875rem; }
-        .ticket-table { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
-        .ticket-table table { width: 100%; border-collapse: collapse; }
-        .ticket-table th { background: var(--bg-color); padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid var(--border-color); }
-        .ticket-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
-        .ticket-table tr:last-child td { border-bottom: none; }
-        .ticket-table tr:hover { background: var(--bg-color); }
-        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-        .badge-info { background: #dbeafe; color: #1e40af; }
-        .badge-success { background: #d1fae5; color: #065f46; }
-        .badge-danger { background: #fee2e2; color: #991b1b; }
-        .badge-secondary { background: #e5e7eb; color: #374151; }
-    </style>
-</head>
-<body>
-    <div class="dashboard">
-        <div class="dashboard-header">
-            <div class="container">
-                <div class="dashboard-nav">
-                    <div class="logo"><i class="fa-solid fa-shield-halved"></i> Admin Panel</div>
-                    <div class="nav-links">
-                        <a href="dashboard.php"><i class="fa-solid fa-home"></i> Dashboard</a>
-                        <a href="tickets.php"><i class="fa-solid fa-ticket"></i> All Tickets</a>
-                        <a href="customers.php"><i class="fa-solid fa-users"></i> Customers</a>
-                        <a href="settings.php"><i class="fa-solid fa-cog"></i> Settings</a>
-                        <a href="../index.php"><i class="fa-solid fa-globe"></i> Site</a>
-                        <a href="../logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-moon"></i>
-                        </button>
-                        <button class="style-toggle" aria-label="Switch Theme" title="Switch Theme" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-palette"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+require_once __DIR__ . '/includes/header.php';
+?>
 
-        <div class="container">
+            <style>
+                /* Page specific styles */
+                .ticket-table { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
+                .ticket-table table { width: 100%; border-collapse: collapse; }
+                .ticket-table th { background: var(--bg-color); padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid var(--border-color); }
+                .ticket-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
+                .ticket-table tr:last-child td { border-bottom: none; }
+                .ticket-table tr:hover { background: var(--bg-color); }
+            </style>
+
             <h1 style="margin-bottom: 2rem; color: var(--secondary-color);">Admin Dashboard</h1>
 
             <div class="stats-grid">
@@ -169,8 +117,5 @@ $recentTickets = $stmt->fetchAll();
                     View All Tickets <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
-        </div>
-    </div>
-    <script src="../assets/js/script.js"></script>
-</body>
-</html>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

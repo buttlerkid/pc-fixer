@@ -108,23 +108,10 @@ if ($search) {
 }
 $customers = $stmt->fetchAll();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers - Admin - LocalTechFix</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+require_once __DIR__ . '/includes/header.php';
+?>
     <style>
-        .dashboard { min-height: 100vh; background-color: var(--bg-color); }
-        .dashboard-header { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 1.5rem 0; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
-        .dashboard-nav { display: flex; justify-content: space-between; align-items: center; }
-        .dashboard-nav .logo { font-size: 1.5rem; font-weight: 700; color: var(--white); }
-        .dashboard-nav .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .dashboard-nav .nav-links a { color: var(--white); font-weight: 500; opacity: 0.9; }
-        .dashboard-nav .nav-links a:hover { opacity: 1; }
-        
+        /* Page specific styles */
         .search-bar { background: var(--white); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; }
         .search-bar form { display: flex; gap: 1rem; }
         .search-bar input { flex: 1; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); }
@@ -147,36 +134,8 @@ $customers = $stmt->fetchAll();
         .modal-header h2 { margin: 0; color: var(--secondary-color); }
         .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--light-text); }
         .close-modal:hover { color: var(--secondary-color); }
-        
-        .alert { padding: 1rem; border-radius: var(--radius); margin-bottom: 1rem; }
-        .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
-        .alert-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
     </style>
-</head>
-<body>
-    <div class="dashboard">
-        <div class="dashboard-header">
-            <div class="container">
-                <div class="dashboard-nav">
-                    <div class="logo"><i class="fa-solid fa-shield-halved"></i> Admin Panel</div>
-                    <div class="nav-links">
-                        <a href="dashboard.php"><i class="fa-solid fa-home"></i> Dashboard</a>
-                        <a href="tickets.php"><i class="fa-solid fa-ticket"></i> All Tickets</a>
-                        <a href="customers.php"><i class="fa-solid fa-users"></i> Customers</a>
-                        <a href="../index.php"><i class="fa-solid fa-globe"></i> Site</a>
-                        <a href="../logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-moon"></i>
-                        </button>
-                        <button class="style-toggle" aria-label="Switch Theme" title="Switch Theme" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-palette"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="container">
             <h1 style="margin-bottom: 2rem; color: var(--secondary-color);">Customers (<?= count($customers) ?>)</h1>
 
             <?php if ($success): ?>
@@ -261,8 +220,6 @@ $customers = $stmt->fetchAll();
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
 
     <!-- View Customer Modal -->
     <div id="viewModal" class="modal">
@@ -430,6 +387,5 @@ $customers = $stmt->fetchAll();
             }
         }
     </script>
-    <script src="../assets/js/script.js"></script>
-</body>
-</html>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

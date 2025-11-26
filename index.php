@@ -46,6 +46,7 @@ $completedTickets = $stmt->fetch()['total'];
                     <li><a href="#services" class="nav-link">Services</a></li>
                     <li><a href="#process" class="nav-link">How it Works</a></li>
                     <li><a href="#contact" class="nav-link">Contact Us</a></li>
+                    <li><a href="knowledge-base.php" class="nav-link">Knowledge Base</a></li>
                     <li><a href="login.php" class="nav-link">Login</a></li>
                     <li><a href="register.php" class="nav-link btn-primary">Sign Up</a></li>
                     <li>

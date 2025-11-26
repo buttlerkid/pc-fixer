@@ -91,3 +91,13 @@ INSERT INTO settings (setting_key, setting_value) VALUES
 ('smtp_pass', ''),
 ('smtp_from_email', 'noreply@localtechfix.com'),
 ('smtp_from_name', 'LocalTechFix Support');
+
+-- Articles table for Knowledge Base
+CREATE TABLE IF NOT EXISTS articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    is_published BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

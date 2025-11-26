@@ -201,6 +201,7 @@ $recentTickets = $stmt->fetchAll();
                         <a href="dashboard.php"><i class="fa-solid fa-home"></i> Dashboard</a>
                         <a href="tickets.php"><i class="fa-solid fa-ticket"></i> My Tickets</a>
                         <a href="create-ticket.php"><i class="fa-solid fa-plus"></i> New Ticket</a>
+                        <a href="../knowledge-base.php"><i class="fa-solid fa-book"></i> Knowledge Base</a>
                         <a href="../index.php"><i class="fa-solid fa-globe"></i> Home</a>
                         <a href="../logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">

@@ -92,22 +92,10 @@ $stmt = $conn->prepare("SELECT * FROM files WHERE ticket_id = ? ORDER BY uploade
 $stmt->execute([$ticketId]);
 $files = $stmt->fetchAll();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket #<?= $ticketId ?> - Admin - LocalTechFix</title>
-    <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+require_once __DIR__ . '/includes/header.php';
+?>
     <style>
-        .dashboard { min-height: 100vh; background-color: var(--bg-color); }
-        .dashboard-header { background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); padding: 1.5rem 0; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
-        .dashboard-nav { display: flex; justify-content: space-between; align-items: center; }
-        .dashboard-nav .logo { font-size: 1.5rem; font-weight: 700; color: var(--white); }
-        .dashboard-nav .nav-links { display: flex; gap: 2rem; align-items: center; }
-        .dashboard-nav .nav-links a { color: var(--white); font-weight: 500; opacity: 0.9; }
-        .dashboard-nav .nav-links a:hover { opacity: 1; }
+        /* Page specific styles */
         .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
         .ticket-detail, .ticket-sidebar, .messages, .files { background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; }
         .ticket-header { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
@@ -126,30 +114,7 @@ $files = $stmt->fetchAll();
         .file-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-color); border-radius: var(--radius); margin-bottom: 0.5rem; }
         .file-icon { font-size: 1.5rem; color: var(--primary-color); }
     </style>
-</head>
-<body>
-    <div class="dashboard">
-        <div class="dashboard-header">
-            <div class="container">
-                <div class="dashboard-nav">
-                    <div class="logo"><i class="fa-solid fa-shield-halved"></i> Admin Panel</div>
-                    <div class="nav-links">
-                        <a href="dashboard.php"><i class="fa-solid fa-home"></i> Dashboard</a>
-                        <a href="tickets.php"><i class="fa-solid fa-ticket"></i> All Tickets</a>
-                        <a href="customers.php"><i class="fa-solid fa-users"></i> Customers</a>
-                        <a href="../logout.php"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <button class="theme-toggle" aria-label="Toggle dark mode" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-moon"></i>
-                        </button>
-                        <button class="style-toggle" aria-label="Switch Theme" title="Switch Theme" style="background:none; border:none; color:inherit; cursor:pointer; font-size:1rem;">
-                            <i class="fa-solid fa-palette"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="container">
             <a href="tickets.php" style="display: inline-block; margin-bottom: 1rem; color: var(--primary-color);">
                 <i class="fa-solid fa-arrow-left"></i> Back to All Tickets
             </a>
@@ -263,8 +228,5 @@ $files = $stmt->fetchAll();
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script src="../assets/js/script.js"></script>
-</body>
-</html>
+
+<?php require_once __DIR__ . '/includes/footer.php'; ?>
