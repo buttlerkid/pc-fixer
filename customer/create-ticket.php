@@ -5,8 +5,6 @@ require_once __DIR__ . '/../config/database.php';
 
 requireLogin();
 
-require_once __DIR__ . '/includes/header.php';
-
 $userId = getUserId();
 $db = new Database();
 $conn = $db->connect();
@@ -68,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <h1 style="margin-bottom: 2rem; color: var(--secondary-color);">Create New Ticket</h1>
