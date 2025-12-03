@@ -30,15 +30,7 @@ $recentTickets = $stmt->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-            <style>
-                /* Page specific styles */
-                .ticket-table { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow: hidden; }
-                .ticket-table table { width: 100%; border-collapse: collapse; }
-                .ticket-table th { background: var(--bg-color); padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid var(--border-color); }
-                .ticket-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
-                .ticket-table tr:last-child td { border-bottom: none; }
-                .ticket-table tr:hover { background: var(--bg-color); }
-            </style>
+
 
             <h1 style="margin-bottom: 2rem; color: var(--secondary-color);">Admin Dashboard</h1>
 

@@ -77,11 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p><a href="index.php">← Back to Home</a></p>
             </div>
 
-            <div style="margin-top: 2rem; padding: 1rem; background: #f8fafc; border-radius: var(--radius); font-size: 0.875rem;">
-                <strong>Demo Accounts:</strong><br>
-                Admin: admin@localtechfix.com / admin123<br>
-                Customer: customer@test.com / customer123
-            </div>
+
         </div>
     </div>
     <script src="assets/js/script.js"></script>
