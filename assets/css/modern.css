@@ -787,6 +787,12 @@ body.dark-mode .form-group label {
     transform: scale(1.1) rotate(90deg);
 }
 
+.fab i {
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .hero-container {
