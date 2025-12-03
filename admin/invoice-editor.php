@@ -275,7 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="totals-box">
                 <div class="total-row grand-total">
                     <span>Total Amount:</span>
-                    <span id="grandTotal">$<?= number_format($invoice['amount'], 2) ?></span>
+                    <span id="grandTotal">$<?= number_format($invoice['amount'] ?? 0, 2) ?></span>
                 </div>
             </div>
         </div>

@@ -96,8 +96,23 @@ require_once __DIR__ . '/includes/header.php';
                                         <small style="color: var(--light-text);"><?= htmlspecialchars($ticket['customer_email']) ?></small>
                                     </td>
                                     <td><?= truncate(htmlspecialchars($ticket['title']), 40) ?></td>
-                                    <td><?= getStatusBadge($ticket['status']) ?></td>
-                                    <td><?= getPriorityBadge($ticket['priority']) ?></td>
+                                    <td>
+                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'status', this.value)" class="form-select status-select" style="padding: 0.25rem; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.875rem;">
+                                            <option value="pending" <?= $ticket['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
+                                            <option value="in_progress" <?= $ticket['status'] === 'in_progress' ? 'selected' : '' ?>>In Progress</option>
+                                            <option value="waiting_parts" <?= $ticket['status'] === 'waiting_parts' ? 'selected' : '' ?>>Waiting for Parts</option>
+                                            <option value="completed" <?= $ticket['status'] === 'completed' ? 'selected' : '' ?>>Completed</option>
+                                            <option value="cancelled" <?= $ticket['status'] === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'priority', this.value)" class="form-select priority-select" style="padding: 0.25rem; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.875rem;">
+                                            <option value="low" <?= $ticket['priority'] === 'low' ? 'selected' : '' ?>>Low</option>
+                                            <option value="medium" <?= $ticket['priority'] === 'medium' ? 'selected' : '' ?>>Medium</option>
+                                            <option value="high" <?= $ticket['priority'] === 'high' ? 'selected' : '' ?>>High</option>
+                                            <option value="urgent" <?= $ticket['priority'] === 'urgent' ? 'selected' : '' ?>>Urgent</option>
+                                        </select>
+                                    </td>
                                     <td><?= formatDate($ticket['created_at'], 'M d, Y') ?></td>
                                     <td><?= formatDate($ticket['updated_at'], 'M d, Y') ?></td>
                                     <td>
@@ -113,3 +128,43 @@ require_once __DIR__ . '/includes/header.php';
             </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
+<script>
+const CSRF_TOKEN = '<?= $_SESSION['csrf_token'] ?>';
+
+async function updateTicket(ticketId, field, value) {
+    const data = {
+        action: 'update_ticket',
+        ticket_id: ticketId,
+        csrf_token: CSRF_TOKEN
+    };
+    data[field] = value;
+
+    try {
+        const response = await fetch('ajax_actions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            // Optional: Show a toast or small indicator of success
+            const select = document.querySelector(`select[onchange*="${ticketId}"][onchange*="'${field}'"]`);
+            if (select) {
+                const originalBorder = select.style.borderColor;
+                select.style.borderColor = '#10b981'; // Green
+                setTimeout(() => select.style.borderColor = originalBorder, 1000);
+            }
+        } else {
+            alert(result.message || 'Failed to update ticket');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while updating the ticket');
+    }
+}
+</script>

@@ -30,39 +30,7 @@ $stmt = $conn->prepare("SELECT * FROM files WHERE ticket_id = ? ORDER BY uploade
 $stmt->execute([$ticketId]);
 $files = $stmt->fetchAll();
 
-// Handle new message
-$error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
-    if (!validateCsrfToken($_POST['csrf_token'] ?? '')) {
-        $error = 'Invalid request';
-    } else {
-        $content = sanitize($_POST['message']);
-        if (!empty($content)) {
-            $stmt = $conn->prepare("INSERT INTO messages (ticket_id, author_id, content, is_admin) VALUES (?, ?, ?, 0)");
-            $stmt->execute([$ticketId, $userId, $content]);
-            
-            // Send email to admin
-            try {
-                $adminEmail = getSetting('smtp_from_email');
-                $subject = "New Reply on Ticket: #$ticketId - " . $ticket['title'];
-                
-                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
-                $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
-                
-                $body = "<h2>New Reply</h2>
-                         <p>Customer <strong>" . htmlspecialchars($_SESSION['user_name']) . "</strong> has replied to a ticket.</p>
-                         <p><strong>Message:</strong><br>" . nl2br($content) . "</p>
-                         <p><a href='" . $baseUrl . "/admin/ticket-detail.php?id=$ticketId'>View Ticket in Admin Panel</a></p>";
-                         
-                sendEmail($adminEmail, $subject, $body);
-            } catch (Exception $e) {
-                error_log("Email notification failed: " . $e->getMessage());
-            }
-            
-            redirect('ticket-detail.php?id=' . $ticketId);
-        }
-    }
-}
+// Handle new message - Moved to ajax_actions.php
 ?>
 
 <a href="tickets.php" style="display: inline-block; margin-bottom: 1rem; color: var(--primary-color);">
@@ -130,8 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <form method="POST" style="margin-top: 2rem;">
-        <?= csrfField() ?>
+    <form id="reply-form" style="margin-top: 2rem;">
         <div class="form-group">
             <label for="message">Add a Message</label>
             <textarea id="message" name="message" rows="4" required placeholder="Type your message here..."></textarea>
@@ -143,13 +110,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
 </div>
 
 <script>
+    const TICKET_ID = <?= $ticketId ?>;
+    const CSRF_TOKEN = '<?= $_SESSION['csrf_token'] ?>';
+
     document.addEventListener('DOMContentLoaded', function() {
+        const replyForm = document.getElementById('reply-form');
         const messageInput = document.getElementById('message');
-        if (messageInput) {
+        const messagesContainer = document.querySelector('.messages');
+
+        if (replyForm) {
+            replyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const content = messageInput.value.trim();
+                if (!content) return;
+
+                const submitBtn = replyForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+
+                try {
+                    const response = await fetch('ajax_actions.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            action: 'send_message',
+                            ticket_id: TICKET_ID,
+                            message: content,
+                            csrf_token: CSRF_TOKEN
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        messageInput.value = '';
+                        
+                        // Create a temporary container to parse the HTML string
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = result.html;
+                        const newMessage = tempDiv.firstElementChild;
+                        
+                        // Insert before the form
+                        replyForm.parentNode.insertBefore(newMessage, replyForm);
+                        
+                        // Remove "No messages yet" if it exists
+                        const noMsg = messagesContainer.querySelector('p[style*="text-align: center"]');
+                        if (noMsg) noMsg.remove();
+                    } else {
+                        alert(result.message || 'Failed to send message');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while sending the message');
+                }
+
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnText;
+            });
+
+            // Enter to Send
             messageInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    this.form.submit();
+                    replyForm.dispatchEvent(new Event('submit'));
                 }
             });
         }

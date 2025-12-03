@@ -176,6 +176,7 @@ img {
 
 .nav-link.btn-primary {
     color: var(--white);
+    border-radius: 50px;
 }
 
 .mobile-menu-btn {
@@ -620,6 +621,8 @@ body.dark-mode .theme-toggle i::before {
     box-shadow: var(--shadow-lg);
     transition: all 0.3s ease;
     z-index: 999;
+    line-height: 1;
+    padding: 0;
 }
 
 .fab:hover {

@@ -15,6 +15,11 @@ $customerCount = $stmt->fetch()['total'];
 $stmt = $db->prepare("SELECT COUNT(*) as total FROM tickets WHERE status = 'completed'");
 $stmt->execute();
 $completedTickets = $stmt->fetch()['total'];
+
+// Get published knowledge base articles
+$stmt = $db->prepare("SELECT * FROM articles WHERE is_published = 1 ORDER BY created_at DESC");
+$stmt->execute();
+$kbArticles = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -285,6 +290,38 @@ $completedTickets = $stmt->fetch()['total'];
                     </ul>
                     <a href="#contact" class="btn btn-secondary btn-block">Book Now</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Base Section -->
+    <section id="knowledge-base" class="faq section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Knowledge Base</h2>
+                <p>Helpful articles and guides.</p>
+            </div>
+            <div class="faq-container">
+                <?php if (empty($kbArticles)): ?>
+                    <p style="text-align: center; color: var(--light-text);">No articles available at the moment.</p>
+                <?php else: ?>
+                    <?php foreach ($kbArticles as $article): ?>
+                        <div class="faq-item">
+                            <button class="faq-question">
+                                <?= htmlspecialchars($article['title']) ?>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <div style="padding: 1rem 0;">
+                                    <?= $article['content'] // Content is rich text from editor ?>
+                                </div>
+                                <div style="font-size: 0.875rem; color: var(--light-text); margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                                    Last updated: <?= formatDate($article['updated_at']) ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
     </section>

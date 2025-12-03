@@ -109,24 +109,47 @@ switch ($action) {
 
     case 'update_ticket':
         $ticketId = (int)($data['ticket_id'] ?? 0);
-        $status = $data['status'] ?? '';
-        $priority = $data['priority'] ?? '';
+        $status = $data['status'] ?? null;
+        $priority = $data['priority'] ?? null;
         
-        if ($ticketId && $status && $priority) {
-            $stmt = $conn->prepare("UPDATE tickets SET status = ?, priority = ? WHERE id = ?");
-            if ($stmt->execute([$status, $priority, $ticketId])) {
+        if ($ticketId && ($status || $priority)) {
+            // Build dynamic query
+            $fields = [];
+            $params = [];
+            
+            if ($status) {
+                $fields[] = "status = ?";
+                $params[] = $status;
+            }
+            
+            if ($priority) {
+                $fields[] = "priority = ?";
+                $params[] = $priority;
+            }
+            
+            $params[] = $ticketId;
+            $sql = "UPDATE tickets SET " . implode(', ', $fields) . " WHERE id = ?";
+            
+            $stmt = $conn->prepare($sql);
+            if ($stmt->execute($params)) {
+                
+                // Fetch updated ticket info for email and response
+                $stmt = $conn->prepare("SELECT t.*, u.email as customer_email FROM tickets t JOIN users u ON t.user_id = u.id WHERE t.id = ?");
+                $stmt->execute([$ticketId]);
+                $ticketInfo = $stmt->fetch();
                 
                 // Send email notification
                 try {
-                    $stmt = $conn->prepare("SELECT t.title, u.email as customer_email FROM tickets t JOIN users u ON t.user_id = u.id WHERE t.id = ?");
-                    $stmt->execute([$ticketId]);
-                    $ticketInfo = $stmt->fetch();
-                    
                     if ($ticketInfo) {
                         $subject = "Ticket Updated: #$ticketId - " . $ticketInfo['title'];
                         $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
                         $baseUrl = $protocol . "://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 2);
-                        $body = "<h2>Ticket Updated</h2><p>Your ticket status has been updated.</p><p><strong>New Status:</strong> " . ucfirst($status) . "</p><p><strong>New Priority:</strong> " . ucfirst($priority) . "</p><p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
+                        
+                        $changes = [];
+                        if ($status) $changes[] = "<strong>New Status:</strong> " . ucfirst($status);
+                        if ($priority) $changes[] = "<strong>New Priority:</strong> " . ucfirst($priority);
+                        
+                        $body = "<h2>Ticket Updated</h2><p>Your ticket has been updated.</p><p>" . implode('<br>', $changes) . "</p><p><a href='" . $baseUrl . "/customer/ticket-detail.php?id=$ticketId'>View Ticket</a></p>";
                         sendEmail($ticketInfo['customer_email'], $subject, $body);
                     }
                 } catch (Exception $e) {
@@ -136,8 +159,8 @@ switch ($action) {
                 echo json_encode([
                     'success' => true, 
                     'message' => 'Ticket updated',
-                    'statusBadge' => getStatusBadge($status),
-                    'priorityBadge' => getPriorityBadge($priority)
+                    'statusBadge' => getStatusBadge($ticketInfo['status']),
+                    'priorityBadge' => getPriorityBadge($ticketInfo['priority'])
                 ]);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Failed to update ticket']);

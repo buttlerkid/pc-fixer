@@ -543,6 +543,10 @@ body.dark-mode .faq-question {
     text-align: center;
 }
 
+.step {
+    position: relative;
+}
+
 .step-number {
     width: 50px;
     height: 50px;
@@ -691,7 +695,7 @@ body.dark-mode .form-group label {
 }
 
 .stat-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
     border-color: var(--primary-color);
 }
@@ -775,6 +779,8 @@ body.dark-mode .form-group label {
     transition: all 0.3s ease;
     z-index: 999;
     text-decoration: none;
+    line-height: 1;
+    padding: 0;
 }
 
 .fab:hover {
