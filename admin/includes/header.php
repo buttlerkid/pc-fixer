@@ -13,7 +13,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 </head>
 <body>
-    <div class="dashboard">
+    <div class="dashboard admin-dashboard">
         <div class="dashboard-header">
             <div class="container">
                 <div class="dashboard-nav">
