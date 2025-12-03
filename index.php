@@ -59,11 +59,7 @@ $kbArticles = $stmt->fetchAll();
                             <i class="fa-solid fa-moon"></i>
                         </button>
                     </li>
-                    <li>
-                        <button class="style-toggle" aria-label="Switch Theme" title="Switch Theme">
-                            <i class="fa-solid fa-palette"></i>
-                        </button>
-                    </li>
+
                 </ul>
                 <button class="mobile-menu-btn" aria-label="Toggle menu">
                     <i class="fa-solid fa-bars"></i>

@@ -209,18 +209,7 @@ function updateSetting($key, $value) {
  * Get the current theme CSS file path
  */
 function getThemeCss() {
-    $theme = getSetting('site_theme', 'default');
-    
-    // Check for cookie override
-    if (isset($_COOKIE['site_theme'])) {
-        $cookieTheme = $_COOKIE['site_theme'];
-        if (in_array($cookieTheme, ['default', 'modern'])) {
-            $theme = $cookieTheme;
-        }
-    }
-    
-    $cssFile = $theme === 'modern' ? 'assets/css/modern.css' : 'assets/css/styles.css';
-    return $cssFile . '?v=' . time();
+    return 'assets/css/modern.css?v=' . time();
 }
 
 /**
