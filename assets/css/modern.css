@@ -1329,45 +1329,6 @@ body.dark-mode .kb-title {
     max-height: 90vh;
     overflow-y: auto;
     border-radius: var(--radius);
-    padding: 3rem;
-    position: relative;
-    box-shadow: var(--shadow-lg);
-}
-
-.close-modal {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--light-text);
-    transition: color 0.3s;
-}
-
-border-radius: var(--radius);
-transition: all 0.3s ease;
-display: flex;
-align-items: center;
-gap: 0.5rem;
-opacity: 0.9;
-}
-
-.admin-dashboard .dashboard-nav .nav-links a:hover,
-.admin-dashboard .dashboard-nav .nav-links a.active {
-    background: rgba(255, 255, 255, 0.2);
-    opacity: 1;
-}
-
-.admin-dashboard .dashboard-nav .dropdown-trigger {
-    color: #ffffff !important;
-}
-
-/* Admin Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
