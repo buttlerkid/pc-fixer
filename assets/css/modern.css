@@ -1194,29 +1194,6 @@ body.dark-mode .auth-header h1 {
 
 .password-requirements {
     font-size: 0.875rem;
-    color: var(--light-text);
-    margin-top: 0.5rem;
-}
-
-
-/* Knowledge Base */
-.kb-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    padding: 6rem 0 4rem;
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 4rem;
-}
-
-.kb-header h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: var(--white);
-}
-
-.kb-header p {
-    font-size: 1.25rem;
-    opacity: 0.9;
     max-width: 600px;
     margin: 0 auto 2rem;
     color: var(--white);
