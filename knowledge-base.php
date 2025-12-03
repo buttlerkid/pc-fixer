@@ -52,7 +52,7 @@ $articles = $stmt->fetchAll();
                         <?php if (isAdmin()): ?>
                             <li><a href="admin/dashboard.php" class="btn btn-primary">Admin Panel</a></li>
                         <?php else: ?>
-                            <li><a href="customer/dashboard.php" class="btn btn-primary">My Dashboard</a></li>
+                            <li><a href="customer/dashboard.php" class="btn btn-primary">User Panel</a></li>
                         <?php endif; ?>
                     <?php else: ?>
                         <li><a href="login.php" class="nav-link">Login</a></li>

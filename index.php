@@ -52,8 +52,16 @@ $kbArticles = $stmt->fetchAll();
                     <li><a href="#process" class="nav-link">How it Works</a></li>
                     <li><a href="#contact" class="nav-link">Contact Us</a></li>
                     <li><a href="knowledge-base.php" class="nav-link">Knowledge Base</a></li>
-                    <li><a href="login.php" class="nav-link">Login</a></li>
-                    <li><a href="register.php" class="nav-link btn-primary">Sign Up</a></li>
+                    <?php if (isLoggedIn()): ?>
+                        <?php if (isAdmin()): ?>
+                            <li><a href="admin/dashboard.php" class="nav-link btn-primary">Admin Panel</a></li>
+                        <?php else: ?>
+                            <li><a href="customer/dashboard.php" class="nav-link btn-primary">User Panel</a></li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li><a href="login.php" class="nav-link">Login</a></li>
+                        <li><a href="register.php" class="nav-link btn-primary">Sign Up</a></li>
+                    <?php endif; ?>
                     <li>
                         <button class="theme-toggle" aria-label="Toggle dark mode">
                             <i class="fa-solid fa-moon"></i>
