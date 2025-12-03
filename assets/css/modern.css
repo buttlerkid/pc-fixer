@@ -189,8 +189,54 @@ body.dark-mode .header {
     transform: translateY(-2px);
 }
 
-background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent 40%),
-radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.1), transparent 40%);
+.btn-block {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Theme Toggle */
+.theme-toggle,
+.style-toggle {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover,
+.style-toggle:hover {
+    color: var(--primary-color);
+    background-color: rgba(99, 102, 241, 0.1);
+}
+
+body.dark-mode .theme-toggle i::before {
+    content: "\f185";
+}
+
+/* Mobile Menu */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
+/* Hero Section */
+.hero {
+    padding: 160px 0 100px;
+    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent 40%),
+        radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.1), transparent 40%);
 }
 
 .hero-container {
@@ -1332,6 +1378,66 @@ body.dark-mode .kb-title {
         opacity: 0;
     }
 
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* Admin Dashboard Styles */
+align-items: center;
+}
+
+.admin-dashboard .dashboard-nav .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-dashboard .dashboard-nav .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.admin-dashboard .dashboard-nav .nav-links a {
+    color: #ffffff !important;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.9;
+}
+
+.admin-dashboard .dashboard-nav .nav-links a:hover,
+.admin-dashboard .dashboard-nav .nav-links a.active {
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 1;
+}
+
+.admin-dashboard .dashboard-nav .dropdown-trigger {
+    color: #ffffff !important;
+}
+
+/* Admin Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--radius);
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
 }
@@ -1403,6 +1509,18 @@ body.dark-mode .stat-card .stat-number {
     color: var(--text-color);
 }
 
+.stat-card .stat-label {
+    color: var(--light-text);
+    font-size: 0.875rem;
+}
+
+/* Admin Tables */
+.ticket-table {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .ticket-table table {
