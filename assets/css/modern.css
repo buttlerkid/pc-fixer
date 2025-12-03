@@ -189,25 +189,8 @@ body.dark-mode .header {
     transform: translateY(-2px);
 }
 
-.btn-block {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-background: none;
-border: none;
-font-size: 1.5rem;
-color: var(--text-color);
-cursor: pointer;
-margin-left: 1rem;
-}
-
-/* Hero Section */
-.hero {
-    padding: 160px 0 100px;
-    background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent 40%),
-        radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.1), transparent 40%);
+background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent 40%),
+radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.1), transparent 40%);
 }
 
 .hero-container {
@@ -1349,19 +1332,6 @@ body.dark-mode .kb-title {
         opacity: 0;
     }
 
-    to {
-        opacity: 1;
-    }
-}
-
-gap: 1.5rem;
-margin-bottom: 2rem;
-}
-
-.stat-card {
-    background: var(--white);
-    padding: 1.5rem;
-    border-radius: var(--radius);
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
 }
@@ -1433,18 +1403,6 @@ body.dark-mode .stat-card .stat-number {
     color: var(--text-color);
 }
 
-.stat-card .stat-label {
-    color: var(--light-text);
-    font-size: 0.875rem;
-}
-
-/* Admin Tables */
-.ticket-table {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
-    border: 1px solid var(--border-color);
 }
 
 .ticket-table table {
