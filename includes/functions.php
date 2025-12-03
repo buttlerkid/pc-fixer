@@ -13,27 +13,7 @@ function sanitize($data) {
     return htmlspecialchars(strip_tags(trim($data)), ENT_QUOTES, 'UTF-8');
 }
 
-/**
- * Check if user is logged in
- * @return bool
- */
-function isLoggedIn() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    return isset($_SESSION['user_id']);
-}
 
-/**
- * Check if current user is admin
- * @return bool
- */
-function isAdmin() {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
-}
 
 /**
  * Redirect to a URL

@@ -15,10 +15,13 @@ define('MAX_FILE_SIZE', 5242880); // 5MB in bytes
 define('ALLOWED_FILE_TYPES', ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx', 'txt', 'log']);
 
 // Session settings
-ini_set('session.cookie_httponly', 1);
-ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 0); // Set to 1 in production with HTTPS
-session_start();
+// Session settings
+if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_secure', 0); // Set to 1 in production with HTTPS
+    session_start();
+}
 
 // Timezone
 date_default_timezone_set('Europe/Budapest');
