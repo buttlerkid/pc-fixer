@@ -8,12 +8,15 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - LocalTechFix</title>
-    <link rel="stylesheet" href="../assets/css/modern.css?v=1.1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/modern.css?v=1.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 <body>
-    <div class="dashboard admin-dashboard">
+    <div class="dashboard">
         <div class="dashboard-header">
             <div class="container">
                 <div class="dashboard-nav">
@@ -39,7 +42,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                         
                         <div class="dropdown">
-                            <div class="dropdown-trigger" style="color: var(--white); font-weight: 500; opacity: 0.8;">
+                            <div class="dropdown-trigger">
                                 <i class="fa-solid fa-user-circle"></i> Account <i class="fa-solid fa-caret-down"></i>
                             </div>
                             <div class="dropdown-content">

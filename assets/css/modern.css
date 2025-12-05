@@ -1194,6 +1194,29 @@ body.dark-mode .auth-header h1 {
 
 .password-requirements {
     font-size: 0.875rem;
+    color: var(--light-text);
+    margin-top: 0.5rem;
+}
+
+
+/* Knowledge Base */
+.kb-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    padding: 6rem 0 4rem;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.kb-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.kb-header p {
+    font-size: 1.25rem;
+    opacity: 0.9;
     max-width: 600px;
     margin: 0 auto 2rem;
     color: var(--white);
@@ -1312,133 +1335,463 @@ body.dark-mode .kb-title {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
 
-    .stat-card.warning .stat-icon {
-        background: #fef3c7;
-        color: #f59e0b;
+.article-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.article-content {
+    background: var(--white);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card.primary .stat-icon {
+    background: #eff6ff;
+    color: var(--primary-color);
+}
+
+.stat-card.warning .stat-icon {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.stat-card.info .stat-icon {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.stat-card.success .stat-icon {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.stat-card.secondary .stat-icon {
+    background: #e5e7eb;
+    color: #6b7280;
+}
+
+/* Dark mode adjustments for stat icons */
+body.dark-mode .stat-card.primary .stat-icon {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .stat-card.warning .stat-icon {
+    background: rgba(245, 158, 11, 0.2);
+}
+
+body.dark-mode .stat-card.info .stat-icon {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+body.dark-mode .stat-card.success .stat-icon {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .stat-card.secondary .stat-icon {
+    background: rgba(107, 114, 128, 0.2);
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+body.dark-mode .stat-card .stat-number {
+    color: var(--text-color);
+}
+
+.stat-card .stat-label {
+    color: var(--light-text);
+    font-size: 0.875rem;
+}
+
+/* Admin Tables */
+.ticket-table {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.ticket-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-table th {
+    background: var(--table-header-bg);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+body.dark-mode .ticket-table th {
+    color: var(--text-color);
+}
+
+.ticket-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.ticket-table tr:last-child td {
+    border-bottom: none;
+}
+
+.ticket-table tr:hover {
+    background: var(--table-hover-bg);
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-info {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+}
+
+.kb-excerpt {
+    color: var(--light-text);
+    margin-bottom: 1.5rem;
+    flex: 1;
+    line-height: 1.6;
+}
+
+.kb-link {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1rem;
+    transition: gap 0.3s;
+}
+
+.kb-link:hover {
+    gap: 0.75rem;
+}
+
+/* Article Modal */
+.article-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.article-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.article-content {
+    background: var(--white);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card.primary .stat-icon {
+    background: #eff6ff;
+    color: var(--primary-color);
+}
+
+.stat-card.warning .stat-icon {
+    background: #fef3c7;
+    color: #f59e0b;
+}
+
+.stat-card.info .stat-icon {
+    background: #dbeafe;
+    color: #3b82f6;
+}
+
+.stat-card.success .stat-icon {
+    background: #d1fae5;
+    color: #10b981;
+}
+
+.stat-card.secondary .stat-icon {
+    background: #e5e7eb;
+    color: #6b7280;
+}
+
+/* Dark mode adjustments for stat icons */
+body.dark-mode .stat-card.primary .stat-icon {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+body.dark-mode .stat-card.warning .stat-icon {
+    background: rgba(245, 158, 11, 0.2);
+}
+
+body.dark-mode .stat-card.info .stat-icon {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+body.dark-mode .stat-card.success .stat-icon {
+    background: rgba(16, 185, 129, 0.2);
+}
+
+body.dark-mode .stat-card.secondary .stat-icon {
+    background: rgba(107, 114, 128, 0.2);
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+body.dark-mode .stat-card .stat-number {
+    color: var(--text-color);
+}
+
+.stat-card .stat-label {
+    color: var(--light-text);
+    font-size: 0.875rem;
+}
+
+/* Admin Tables */
+.ticket-table {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.ticket-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-table th {
+    background: var(--table-header-bg);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+body.dark-mode .ticket-table th {
+    color: var(--text-color);
+}
+
+.ticket-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.ticket-table tr:last-child td {
+    border-bottom: none;
+}
+
+.ticket-table tr:hover {
+    background: var(--table-hover-bg);
+}
+
+/* Badges */
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-info {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-secondary {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--light-text);
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--danger-color);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
 
-    .stat-card.info .stat-icon {
-        background: #dbeafe;
-        color: #3b82f6;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .stat-card.success .stat-icon {
-        background: #d1fae5;
-        color: #10b981;
-    }
+.dashboard,
+.auth-container,
+.container,
+.knowledge-base {
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-    .stat-card.secondary .stat-icon {
-        background: #e5e7eb;
-        color: #6b7280;
-    }
+.btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-    /* Dark mode adjustments for stat icons */
-    body.dark-mode .stat-card.primary .stat-icon {
-        background: rgba(99, 102, 241, 0.2);
-    }
+.btn:active {
+    transform: scale(0.96);
+}
 
-    body.dark-mode .stat-card.warning .stat-icon {
-        background: rgba(245, 158, 11, 0.2);
-    }
+.stat-card,
+.ticket-item,
+.article-card {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
 
-    body.dark-mode .stat-card.info .stat-icon {
-        background: rgba(59, 130, 246, 0.2);
-    }
+.stat-card:hover,
+.ticket-item:hover,
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
 
-    body.dark-mode .stat-card.success .stat-icon {
-        background: rgba(16, 185, 129, 0.2);
-    }
+/* Dashboard Styles */
+.dashboard-header {
+    background: var(--white);
+    padding: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
 
-    body.dark-mode .stat-card.secondary .stat-icon {
-        background: rgba(107, 114, 128, 0.2);
-    }
+.dashboard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .stat-card .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--secondary-color);
-    }
+.dashboard-nav .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
 
-    body.dark-mode .stat-card .stat-number {
-        color: var(--text-color);
-    }
+.dashboard-nav .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
 
-    .stat-card .stat-label {
-        color: var(--light-text);
-        font-size: 0.875rem;
-    }
+.dashboard-nav .nav-links a {
+    color: var(--text-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s;
+}
 
-    /* Admin Tables */
-    .ticket-table {
-        background: var(--white);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-md);
-        overflow: hidden;
-        border: 1px solid var(--border-color);
-    }
-
-    .ticket-table table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .ticket-table th {
-        background: var(--table-header-bg);
-        padding: 1rem;
-        text-align: left;
-        font-weight: 600;
-        color: var(--secondary-color);
-        border-bottom: 2px solid var(--border-color);
-    }
-
-    body.dark-mode .ticket-table th {
-        color: var(--text-color);
-    }
-
-    .ticket-table td {
-        padding: 1rem;
-        border-bottom: 1px solid var(--border-color);
-        color: var(--text-color);
-    }
-
-    .ticket-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .ticket-table tr:hover {
-        background: var(--table-hover-bg);
-    }
-
-    /* Badges */
-    .badge {
-        padding: 0.25rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-
-    .badge-warning {
-        background: #fef3c7;
-        color: #92400e;
-    }
-
-    .badge-info {
-        background: #dbeafe;
-        color: #1e40af;
-    }
-
-    .badge-success {
-        background: #d1fae5;
-        color: #065f46;
-    }
-
-    .badge-danger {
-        background: #fee2e2;
-        color: #991b1b;
-    }
-
-    .badge-secondary {
-        background: #e5e7eb;
-        color: #374151;
-    }
+.dashboard-nav .nav-links a:hover,
+.dashboard-nav .nav-links a.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}

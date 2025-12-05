@@ -6,7 +6,7 @@
 
 // Site settings
 define('SITE_NAME', 'LocalTechFix');
-define('SITE_URL', 'http://localhost/Proj2');
+define('SITE_URL', 'http://localhost');
 define('BASE_PATH', dirname(__DIR__));
 
 // Directory paths
