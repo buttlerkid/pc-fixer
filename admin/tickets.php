@@ -97,7 +97,7 @@ require_once __DIR__ . '/includes/header.php';
                                     </td>
                                     <td><?= truncate(htmlspecialchars($ticket['title']), 40) ?></td>
                                     <td>
-                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'status', this.value)" class="form-select status-select" style="padding: 0.25rem; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.875rem;">
+                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'status', this.value)" class="form-select status-select">
                                             <option value="pending" <?= $ticket['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
                                             <option value="in_progress" <?= $ticket['status'] === 'in_progress' ? 'selected' : '' ?>>In Progress</option>
                                             <option value="waiting_parts" <?= $ticket['status'] === 'waiting_parts' ? 'selected' : '' ?>>Waiting for Parts</option>
@@ -106,7 +106,7 @@ require_once __DIR__ . '/includes/header.php';
                                         </select>
                                     </td>
                                     <td>
-                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'priority', this.value)" class="form-select priority-select" style="padding: 0.25rem; border-radius: 4px; border: 1px solid var(--border-color); font-size: 0.875rem;">
+                                        <select onchange="updateTicket(<?= $ticket['id'] ?>, 'priority', this.value)" class="form-select priority-select">
                                             <option value="low" <?= $ticket['priority'] === 'low' ? 'selected' : '' ?>>Low</option>
                                             <option value="medium" <?= $ticket['priority'] === 'medium' ? 'selected' : '' ?>>Medium</option>
                                             <option value="high" <?= $ticket['priority'] === 'high' ? 'selected' : '' ?>>High</option>
