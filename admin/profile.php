@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="password" id="confirm_password" name="confirm_password" class="form-control" required minlength="6">
             </div>
             
-            <button type="submit" class="btn btn-secondary">
+            <button type="submit" class="btn btn-primary">
                 <i class="fa-solid fa-key"></i> Change Password
             </button>
         </form>
