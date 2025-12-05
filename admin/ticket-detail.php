@@ -35,28 +35,9 @@ require_once __DIR__ . '/includes/header.php';
     <style>
         /* Page specific styles */
         .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
-        .ticket-detail, .ticket-sidebar, .messages, .files { background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; }
-        .ticket-header { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
-        .ticket-title { font-size: 1.75rem; color: var(--secondary-color); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
-        .ticket-meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; background: var(--bg-color); padding: 1.5rem; border-radius: var(--radius); }
-        .meta-item { display: flex; align-items: flex-start; gap: 0.75rem; }
-        .meta-icon { width: 40px; height: 40px; background: rgba(59, 130, 246, 0.1); color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-        .meta-content div:first-child { font-size: 0.875rem; color: var(--light-text); margin-bottom: 0.25rem; }
-        .meta-content div:last-child { font-weight: 500; color: var(--secondary-color); }
-        
-        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
-        .badge-info { background: #dbeafe; color: #1e40af; }
-        .badge-success { background: #d1fae5; color: #065f46; }
-        .badge-danger { background: #fee2e2; color: #991b1b; }
-        .badge-secondary { background: #e5e7eb; color: #374151; }
-        .message { padding: 1rem; margin-bottom: 1rem; border-radius: var(--radius); background: var(--bg-color); }
-        .message.admin { background: #eff6ff; border-left: 3px solid var(--primary-color); }
-        .message-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.875rem; }
-        .message-author { font-weight: 600; color: var(--secondary-color); }
-        .message-time { color: var(--light-text); }
-        .file-item { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-color); border-radius: var(--radius); margin-bottom: 0.5rem; }
-        .file-icon { font-size: 1.5rem; color: var(--primary-color); }
+        @media (max-width: 1024px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
     </style>
 
             <a href="tickets.php" style="display: inline-block; margin-bottom: 1rem; color: var(--primary-color);">
@@ -65,43 +46,45 @@ require_once __DIR__ . '/includes/header.php';
 
             <div class="content-grid">
                 <div>
-                    <div class="ticket-detail">
-                        <div class="ticket-header">
-                            <div class="ticket-title">
-                                <span>#<?= $ticket['id'] ?> <?= htmlspecialchars($ticket['title']) ?></span>
+                    <div class="content-card">
+                        <div class="ticket-detail-header">
+                            <div class="ticket-title-row">
+                                <div class="ticket-title-text">
+                                    #<?= $ticket['id'] ?> <?= htmlspecialchars($ticket['title']) ?>
+                                </div>
                                 <?= getStatusBadge($ticket['status']) ?>
                             </div>
                             
-                            <div class="ticket-meta-grid">
-                                <div class="meta-item">
-                                    <div class="meta-icon"><i class="fa-solid fa-user"></i></div>
-                                    <div class="meta-content">
-                                        <div>Customer</div>
-                                        <div><?= htmlspecialchars($ticket['customer_name']) ?></div>
+                            <div class="ticket-info-grid">
+                                <div class="ticket-info-item">
+                                    <div class="ticket-info-icon"><i class="fa-solid fa-user"></i></div>
+                                    <div class="ticket-info-content">
+                                        <div class="ticket-info-label">Customer</div>
+                                        <div class="ticket-info-value"><?= htmlspecialchars($ticket['customer_name']) ?></div>
                                     </div>
                                 </div>
                                 
-                                <div class="meta-item">
-                                    <div class="meta-icon"><i class="fa-solid fa-envelope"></i></div>
-                                    <div class="meta-content">
-                                        <div>Email</div>
-                                        <div><?= htmlspecialchars($ticket['customer_email']) ?></div>
+                                <div class="ticket-info-item">
+                                    <div class="ticket-info-icon"><i class="fa-solid fa-envelope"></i></div>
+                                    <div class="ticket-info-content">
+                                        <div class="ticket-info-label">Email</div>
+                                        <div class="ticket-info-value"><?= htmlspecialchars($ticket['customer_email']) ?></div>
                                     </div>
                                 </div>
 
-                                <div class="meta-item">
-                                    <div class="meta-icon"><i class="fa-solid fa-calendar"></i></div>
-                                    <div class="meta-content">
-                                        <div>Created</div>
-                                        <div><?= formatDate($ticket['created_at']) ?></div>
+                                <div class="ticket-info-item">
+                                    <div class="ticket-info-icon"><i class="fa-solid fa-calendar"></i></div>
+                                    <div class="ticket-info-content">
+                                        <div class="ticket-info-label">Created</div>
+                                        <div class="ticket-info-value"><?= formatDate($ticket['created_at']) ?></div>
                                     </div>
                                 </div>
 
-                                <div class="meta-item">
-                                    <div class="meta-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                                    <div class="meta-content">
-                                        <div>Last Updated</div>
-                                        <div><?= formatDate($ticket['updated_at']) ?></div>
+                                <div class="ticket-info-item">
+                                    <div class="ticket-info-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                    <div class="ticket-info-content">
+                                        <div class="ticket-info-label">Last Updated</div>
+                                        <div class="ticket-info-value"><?= formatDate($ticket['updated_at']) ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -109,53 +92,61 @@ require_once __DIR__ . '/includes/header.php';
 
                         <div>
                             <h3 class="section-title">Description</h3>
-                            <p style="color: var(--text-color); line-height: 1.6;"><?= nl2br(htmlspecialchars($ticket['description'])) ?></p>
+                            <p style="color: var(--text-color); line-height: 1.6; margin-top: 1rem;"><?= nl2br(htmlspecialchars($ticket['description'])) ?></p>
                         </div>
                     </div>
 
                     <?php if (!empty($files)): ?>
-                        <div class="files">
+                        <div class="content-card">
                             <h3 class="section-title">Attached Files</h3>
-                            <?php foreach ($files as $file): ?>
-                                <div class="file-item">
-                                    <i class="fa-solid <?= getFileIcon($file['filename']) ?> file-icon"></i>
-                                    <div style="flex: 1;">
-                                        <div style="font-weight: 600; color: var(--secondary-color);"><?= htmlspecialchars($file['filename']) ?></div>
-                                        <div style="font-size: 0.875rem; color: var(--light-text);">
-                                            <?= formatFileSize($file['filesize']) ?> • <?= formatDate($file['uploaded_at']) ?>
+                            <div class="file-list">
+                                <?php foreach ($files as $file): ?>
+                                    <div class="file-card">
+                                        <i class="fa-solid <?= getFileIcon($file['filename']) ?> file-icon" style="font-size: 1.5rem; color: var(--primary-color);"></i>
+                                        <div class="file-info">
+                                            <div class="file-name"><?= htmlspecialchars($file['filename']) ?></div>
+                                            <div class="file-meta">
+                                                <?= formatFileSize($file['filesize']) ?> • <?= formatDate($file['uploaded_at']) ?>
+                                            </div>
                                         </div>
+                                        <a href="../assets/uploads/<?= htmlspecialchars($file['filepath']) ?>" class="btn btn-secondary btn-sm" download>
+                                            <i class="fa-solid fa-download"></i>
+                                        </a>
                                     </div>
-                                    <a href="../assets/uploads/<?= htmlspecialchars($file['filepath']) ?>" class="btn btn-secondary" download>
-                                        <i class="fa-solid fa-download"></i> Download
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     <?php endif; ?>
 
-                    <div class="messages">
+                    <div class="content-card">
                         <h3 class="section-title">Messages</h3>
                         
                         <?php if (empty($messages)): ?>
                             <p style="color: var(--light-text); text-align: center; padding: 2rem;">No messages yet</p>
                         <?php else: ?>
+                            <div class="messages">
                             <?php foreach ($messages as $message): ?>
-                                <div class="message <?= $message['is_admin'] ? 'admin' : '' ?>" id="message-<?= $message['id'] ?>">
+                                <div class="message-card <?= $message['is_admin'] ? 'admin' : '' ?>" id="message-<?= $message['id'] ?>">
                                     <div class="message-header">
-                                        <span class="message-author">
-                                            <?= $message['is_admin'] ? '<i class="fa-solid fa-shield-halved"></i> ' : '' ?>
+                                        <div class="message-author">
+                                            <?php if ($message['is_admin']): ?>
+                                                <span class="message-badge">Staff</span>
+                                            <?php else: ?>
+                                                <i class="fa-solid fa-user-circle" style="font-size: 1.25rem;"></i>
+                                            <?php endif; ?>
                                             <?= htmlspecialchars($message['author_name']) ?>
-                                        </span>
-                                        <div>
-                                            <span class="message-time" style="margin-right: 0.5rem;"><?= formatDate($message['created_at']) ?></span>
-                                            <button type="button" class="btn btn-danger delete-message-btn" data-message-id="<?= $message['id'] ?>" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; line-height: 1; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 1rem;">
+                                            <span class="message-time"><?= formatDate($message['created_at']) ?></span>
+                                            <button type="button" class="btn btn-danger delete-message-btn" data-message-id="<?= $message['id'] ?>" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; line-height: 1; min-width: auto;">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <div><?= nl2br(htmlspecialchars($message['content'])) ?></div>
+                                    <div style="line-height: 1.6; color: var(--text-color);"><?= nl2br(htmlspecialchars($message['content'])) ?></div>
                                 </div>
                             <?php endforeach; ?>
+                            </div>
                         <?php endif; ?>
 
                         <form id="reply-form" style="margin-top: 2rem;">
@@ -171,7 +162,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
 
                 <div>
-                    <div class="ticket-sidebar">
+                    <div class="content-card">
                         <h3 class="section-title">Ticket Management</h3>
                         
                         <form id="update-form">
