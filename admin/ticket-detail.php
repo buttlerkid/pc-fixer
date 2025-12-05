@@ -37,7 +37,13 @@ require_once __DIR__ . '/includes/header.php';
         .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
         .ticket-detail, .ticket-sidebar, .messages, .files { background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; }
         .ticket-header { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); }
-        .ticket-header h1 { color: var(--secondary-color); margin-bottom: 0.5rem; }
+        .ticket-title { font-size: 1.75rem; color: var(--secondary-color); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+        .ticket-meta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; background: var(--bg-color); padding: 1.5rem; border-radius: var(--radius); }
+        .meta-item { display: flex; align-items: flex-start; gap: 0.75rem; }
+        .meta-icon { width: 40px; height: 40px; background: rgba(59, 130, 246, 0.1); color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .meta-content div:first-child { font-size: 0.875rem; color: var(--light-text); margin-bottom: 0.25rem; }
+        .meta-content div:last-child { font-weight: 500; color: var(--secondary-color); }
+        
         .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
         .badge-warning { background: #fef3c7; color: #92400e; }
         .badge-info { background: #dbeafe; color: #1e40af; }
@@ -61,14 +67,44 @@ require_once __DIR__ . '/includes/header.php';
                 <div>
                     <div class="ticket-detail">
                         <div class="ticket-header">
-                            <h1><?= htmlspecialchars($ticket['title']) ?></h1>
-                            <p style="color: var(--light-text); margin-bottom: 1rem;">
-                                <i class="fa-solid fa-user"></i> <?= htmlspecialchars($ticket['customer_name']) ?> (<?= htmlspecialchars($ticket['customer_email']) ?>)
-                            </p>
-                            <p style="color: var(--light-text);">
-                                <i class="fa-solid fa-calendar"></i> Created: <?= formatDate($ticket['created_at']) ?>
-                                | <i class="fa-solid fa-clock"></i> Updated: <?= formatDate($ticket['updated_at']) ?>
-                            </p>
+                            <div class="ticket-title">
+                                <span>#<?= $ticket['id'] ?> <?= htmlspecialchars($ticket['title']) ?></span>
+                                <?= getStatusBadge($ticket['status']) ?>
+                            </div>
+                            
+                            <div class="ticket-meta-grid">
+                                <div class="meta-item">
+                                    <div class="meta-icon"><i class="fa-solid fa-user"></i></div>
+                                    <div class="meta-content">
+                                        <div>Customer</div>
+                                        <div><?= htmlspecialchars($ticket['customer_name']) ?></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="meta-item">
+                                    <div class="meta-icon"><i class="fa-solid fa-envelope"></i></div>
+                                    <div class="meta-content">
+                                        <div>Email</div>
+                                        <div><?= htmlspecialchars($ticket['customer_email']) ?></div>
+                                    </div>
+                                </div>
+
+                                <div class="meta-item">
+                                    <div class="meta-icon"><i class="fa-solid fa-calendar"></i></div>
+                                    <div class="meta-content">
+                                        <div>Created</div>
+                                        <div><?= formatDate($ticket['created_at']) ?></div>
+                                    </div>
+                                </div>
+
+                                <div class="meta-item">
+                                    <div class="meta-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                                    <div class="meta-content">
+                                        <div>Last Updated</div>
+                                        <div><?= formatDate($ticket['updated_at']) ?></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div>
