@@ -59,6 +59,7 @@ A full-featured **PHP/MySQL ticket management system** for local computer repair
 Proj2/
 ├── config/              # Database and app configuration
 ├── includes/            # Authentication and helper functions
+│   └── public_footer.php # Site-wide footer component
 ├── public/              # Public-facing pages and assets
 │   ├── assets/         # CSS, JS, and uploaded files
 │   ├── login.php
@@ -74,11 +75,14 @@ Proj2/
 │   ├── tickets.php
 │   ├── ticket-detail.php
 │   ├── customers.php
-│   ├── invoices.php    # NEW
-│   ├── settings.php    # NEW
-│   └── cms/           # NEW: CMS Editors
+│   ├── invoices.php    # Billing & Invoicing
+│   ├── settings.php    # Site settings
+│   └── cms/           # Homepage CMS Editors
 ├── database_schema.sql  # Database setup script
-└── .htaccess           # Security configuration
+├── .htaccess           # Security & Error Handling
+├── 404.php             # Custom 404 Error Page
+├── 403.php             # Custom 403 Error Page
+└── 500.php             # Custom 500 Error Page
 ```
 
 ## 🛠️ Technologies Used
@@ -103,6 +107,7 @@ Proj2/
 - XSS protection with `htmlspecialchars()`
 - File upload validation
 - Session security settings
+- Custom Error Pages (404, 403, 500)
 
 ## 📦 Installation
 
