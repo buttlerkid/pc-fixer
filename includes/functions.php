@@ -211,7 +211,7 @@ function updateSetting($key, $value) {
  * Get the current theme CSS file path
  */
 function getThemeCss() {
-    return 'assets/css/modern.css?v=' . time();
+    return '/assets/css/modern.css?v=' . time();
 }
 
 /**
