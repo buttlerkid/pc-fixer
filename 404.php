@@ -74,6 +74,9 @@ require_once __DIR__ . '/includes/auth.php';
         </div>
     </div>
 
+
+    <!-- Footer -->
+    <?php include 'includes/public_footer.php'; ?>
     <script src="/assets/js/script.js"></script>
 </body>
 </html>

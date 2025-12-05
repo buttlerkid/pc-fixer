@@ -366,20 +366,8 @@ $processSteps = getProcessSteps();
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-container">
-            <div class="footer-brand">
-                <i class="fa-solid fa-microchip"></i>
-                <span>LocalTechFix</span>
-            </div>
-            <p class="copyright">&copy; <?= date('Y') ?> LocalTechFix. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            </div>
-        </div>
-    </footer>
+    <!-- Footer -->
+    <?php include 'includes/public_footer.php'; ?>
 
     <!-- Floating Action Button -->
     <a href="#contact" class="fab" aria-label="Contact us">

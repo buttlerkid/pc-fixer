@@ -126,23 +126,8 @@ $articles = $stmt->fetchAll();
     </div>
 
     <!-- Footer -->
-    <footer style="background-color: var(--white); padding: 4rem 0; border-top: 1px solid var(--border-color);">
-        <div class="container" style="text-align: center;">
-            <div class="footer-brand" style="color: var(--secondary-color);">
-                <i class="fa-solid fa-microchip" style="color: var(--primary-color);"></i> LocalTechFix
-            </div>
-            <p style="color: var(--light-text);">Professional Computer Repair Services</p>
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-facebook"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <div class="copyright">
-                &copy; <?= date('Y') ?> LocalTechFix. All rights reserved.
-            </div>
-        </div>
-    </footer>
+    <!-- Footer -->
+    <?php include 'includes/public_footer.php'; ?>
 
     <script src="assets/js/script.js"></script>
     <script>
