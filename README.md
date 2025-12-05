@@ -29,6 +29,22 @@ A full-featured **PHP/MySQL ticket management system** for local computer repair
 - **Customer Support** - Reply to customer messages
 - **Customer Management** - View all customers and their ticket history
 
+### 📝 Knowledge Base
+- **Article Management** - Create, edit, and categorize help articles
+- **Public Help Center** - Searchable repository of guides and tutorials
+- **Rich Text Editor** - WYSIWYG editing for article content
+
+### 💰 Invoicing System
+- **Invoice Generation** - Create professional invoices for repairs
+- **PDF Export** - Print-ready views for billing
+- **Customer Access** - Clients can view their invoice history
+
+### 🖥️ Homepage CMS
+- **Content Management** - Edit all homepage text and sections from admin
+- **Hero & Services** - Customize hero banner and service offerings
+- **Pricing & Testimonials** - Manage pricing plans and client reviews
+- **Dynamic Updates** - Real-time changes without touching code
+
 ### 🎨 Frontend Features
 - Modern, responsive design
 - Dark mode toggle with localStorage persistence
@@ -57,7 +73,10 @@ Proj2/
 │   ├── dashboard.php
 │   ├── tickets.php
 │   ├── ticket-detail.php
-│   └── customers.php
+│   ├── customers.php
+│   ├── invoices.php    # NEW
+│   ├── settings.php    # NEW
+│   └── cms/           # NEW: CMS Editors
 ├── database_schema.sql  # Database setup script
 └── .htaccess           # Security configuration
 ```
@@ -145,6 +164,10 @@ Proj2/
 - **tickets** - Repair tickets
 - **messages** - Ticket messages/communication
 - **files** - Uploaded file attachments
+- **articles** - Knowledge base articles
+- **invoices** - Billing records
+- **invoice_items** - Line items for invoices
+- **cms_*** - Various tables for homepage content (hero, services, etc.)
 
 ### Ticket Statuses
 - `pending` - Awaiting review
@@ -212,7 +235,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-© 2023 LocalTechFix. All rights reserved.
+© 2023 - 2026 LocalTechFix. All rights reserved.
 
 ## 📞 Support
 

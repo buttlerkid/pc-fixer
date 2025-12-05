@@ -22,16 +22,16 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 <div class="dashboard-nav">
                     <div class="logo"><i class="fa-solid fa-shield-halved"></i> Admin Panel</div>
                     <div class="nav-links">
-                        <a href="dashboard.php" class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>">
+                        <a href="/admin/dashboard.php" class="<?= $currentPage === 'dashboard.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-home"></i> Dashboard
                         </a>
-                        <a href="tickets.php" class="<?= $currentPage === 'tickets.php' || $currentPage === 'ticket-detail.php' ? 'active' : '' ?>">
+                        <a href="/admin/tickets.php" class="<?= $currentPage === 'tickets.php' || $currentPage === 'ticket-detail.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-ticket"></i> Tickets
                         </a>
-                        <a href="customers.php" class="<?= $currentPage === 'customers.php' ? 'active' : '' ?>">
+                        <a href="/admin/customers.php" class="<?= $currentPage === 'customers.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-users"></i> Customers
                         </a>
-                        <a href="invoices.php" class="<?= $currentPage === 'invoices.php' || $currentPage === 'invoice-editor.php' || $currentPage === 'invoice-view.php' ? 'active' : '' ?>">
+                        <a href="/admin/invoices.php" class="<?= $currentPage === 'invoices.php' || $currentPage === 'invoice-editor.php' || $currentPage === 'invoice-view.php' ? 'active' : '' ?>">
                             <i class="fa-solid fa-file-invoice-dollar"></i> Invoices
                         </a>
                         <div class="dropdown">
@@ -53,13 +53,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                                 <i class="fa-solid fa-user-circle"></i> Account <i class="fa-solid fa-caret-down"></i>
                             </div>
                             <div class="dropdown-content">
-                                <a href="profile.php">
+                                <a href="/admin/profile.php">
                                     <i class="fa-solid fa-user"></i> Profile
                                 </a>
-                                <a href="../index.php" target="_blank">
+                                <a href="/index.php" target="_blank">
                                     <i class="fa-solid fa-globe"></i> View Site
                                 </a>
-                                <a href="../logout.php" style="color: #ef4444 !important;">
+                                <a href="/logout.php" style="color: #ef4444 !important;">
                                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                                 </a>
                             </div>

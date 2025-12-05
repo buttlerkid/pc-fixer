@@ -372,7 +372,7 @@ $processSteps = getProcessSteps();
                 <i class="fa-solid fa-microchip"></i>
                 <span>LocalTechFix</span>
             </div>
-            <p class="copyright">&copy; 2023 LocalTechFix. All rights reserved.</p>
+            <p class="copyright">&copy; <?= date('Y') ?> LocalTechFix. All rights reserved.</p>
             <div class="social-links">
                 <a href="#"><i class="fa-brands fa-facebook"></i></a>
                 <a href="#"><i class="fa-brands fa-twitter"></i></a>
