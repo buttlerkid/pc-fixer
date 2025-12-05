@@ -72,14 +72,14 @@ require_once __DIR__ . '/includes/header.php';
                         </div>
 
                         <div>
-                            <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">Description</h3>
+                            <h3 class="section-title">Description</h3>
                             <p style="color: var(--text-color); line-height: 1.6;"><?= nl2br(htmlspecialchars($ticket['description'])) ?></p>
                         </div>
                     </div>
 
                     <?php if (!empty($files)): ?>
                         <div class="files">
-                            <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">Attached Files</h3>
+                            <h3 class="section-title">Attached Files</h3>
                             <?php foreach ($files as $file): ?>
                                 <div class="file-item">
                                     <i class="fa-solid <?= getFileIcon($file['filename']) ?> file-icon"></i>
@@ -98,7 +98,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endif; ?>
 
                     <div class="messages">
-                        <h3 style="color: var(--secondary-color); margin-bottom: 1rem;">Messages</h3>
+                        <h3 class="section-title">Messages</h3>
                         
                         <?php if (empty($messages)): ?>
                             <p style="color: var(--light-text); text-align: center; padding: 2rem;">No messages yet</p>
@@ -136,12 +136,12 @@ require_once __DIR__ . '/includes/header.php';
 
                 <div>
                     <div class="ticket-sidebar">
-                        <h3 style="color: var(--secondary-color); margin-bottom: 1.5rem;">Ticket Management</h3>
+                        <h3 class="section-title">Ticket Management</h3>
                         
                         <form id="update-form">
                             <div class="form-group">
                                 <label for="status">Status</label>
-                                <select id="status" name="status" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <select id="status" name="status" class="form-select status-select w-100">
                                     <option value="pending" <?= $ticket['status'] === 'pending' ? 'selected' : '' ?>>Pending</option>
                                     <option value="in_progress" <?= $ticket['status'] === 'in_progress' ? 'selected' : '' ?>>In Progress</option>
                                     <option value="waiting_parts" <?= $ticket['status'] === 'waiting_parts' ? 'selected' : '' ?>>Waiting for Parts</option>
@@ -152,7 +152,7 @@ require_once __DIR__ . '/includes/header.php';
 
                             <div class="form-group">
                                 <label for="priority">Priority</label>
-                                <select id="priority" name="priority" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                                <select id="priority" name="priority" class="form-select priority-select w-100">
                                     <option value="low" <?= $ticket['priority'] === 'low' ? 'selected' : '' ?>>Low</option>
                                     <option value="medium" <?= $ticket['priority'] === 'medium' ? 'selected' : '' ?>>Medium</option>
                                     <option value="high" <?= $ticket['priority'] === 'high' ? 'selected' : '' ?>>High</option>

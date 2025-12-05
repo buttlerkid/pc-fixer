@@ -1986,6 +1986,20 @@ body.dark-mode .dropdown-content a:hover {
     }
 }
 
+/* Global Section Title */
+.section-title {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Utilities */
+.w-100 {
+    width: 100%;
+}
+
 /* Modern Form Select */
 .form-select {
     appearance: none;
