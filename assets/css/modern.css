@@ -800,9 +800,14 @@ body.dark-mode .form-group label {
 }
 
 .fab i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     margin: 0;
     padding: 0;
-    line-height: 1;
+    width: auto;
+    height: auto;
 }
 
 /* Customer Dashboard & Tickets */
