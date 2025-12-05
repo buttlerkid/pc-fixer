@@ -110,21 +110,6 @@ $customers = $stmt->fetchAll();
 require_once __DIR__ . '/includes/header.php';
 ?>
     <style>
-        /* Page specific styles */
-        .search-bar { background: var(--white); padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow-md); margin-bottom: 2rem; }
-        .search-bar form { display: flex; gap: 1rem; }
-        .search-bar input { flex: 1; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius); }
-        
-        .customer-table { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); overflow-x: auto; }
-        .customer-table table { width: 100%; border-collapse: collapse; }
-        .customer-table th { background: var(--bg-color); padding: 1rem; text-align: left; font-weight: 600; color: var(--secondary-color); border-bottom: 2px solid var(--border-color); }
-        .customer-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
-        .customer-table tr:last-child td { border-bottom: none; }
-        .customer-table tr:hover { background: var(--bg-color); }
-        
-        .action-buttons { display: flex; gap: 0.5rem; }
-        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.875rem; }
-        
         /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
         .modal.active { display: flex; align-items: center; justify-content: center; }
@@ -149,7 +134,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
-            <div class="search-bar">
+            <div class="search-bar-container">
                 <form method="GET" action="">
                     <input type="text" name="search" placeholder="Search by name or email..." value="<?= htmlspecialchars($search) ?>">
                     <button type="submit" class="btn btn-primary">
@@ -163,61 +148,63 @@ require_once __DIR__ . '/includes/header.php';
                 </form>
             </div>
 
-            <div class="customer-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Total Tickets</th>
-                            <th>Joined</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if (empty($customers)): ?>
+            <div class="content-card">
+                <div class="data-table-container">
+                    <table class="data-table">
+                        <thead>
                             <tr>
-                                <td colspan="6" style="text-align: center; padding: 3rem; color: var(--light-text);">
-                                    <?= $search ? 'No customers found matching your search' : 'No customers found' ?>
-                                </td>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Total Tickets</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
                             </tr>
-                        <?php else: ?>
-                            <?php foreach ($customers as $customer): ?>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($customers)): ?>
                                 <tr>
-                                    <td><strong>#<?= $customer['id'] ?></strong></td>
-                                    <td><?= htmlspecialchars($customer['name']) ?></td>
-                                    <td><?= htmlspecialchars($customer['email']) ?></td>
-                                    <td>
-                                        <span style="background: #eff6ff; color: var(--primary-color); padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600;">
-                                            <?= $customer['ticket_count'] ?> tickets
-                                        </span>
-                                    </td>
-                                    <td><?= formatDate($customer['created_at'], 'M d, Y') ?></td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button onclick="viewCustomer(<?= $customer['id'] ?>)" class="btn btn-secondary btn-sm" title="View Details">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </button>
-                                            <button onclick="editCustomer(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>', '<?= htmlspecialchars($customer['email'], ENT_QUOTES) ?>')" class="btn btn-primary btn-sm" title="Edit">
-                                                <i class="fa-solid fa-edit"></i>
-                                            </button>
-                                            <button onclick="resetPassword(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>')" class="btn btn-secondary btn-sm" style="background: #fef3c7; color: #92400e;" title="Reset Password">
-                                                <i class="fa-solid fa-key"></i>
-                                            </button>
-                                            <a href="tickets.php?customer=<?= $customer['id'] ?>" class="btn btn-secondary btn-sm" title="View Tickets">
-                                                <i class="fa-solid fa-ticket"></i>
-                                            </a>
-                                            <button onclick="deleteCustomer(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>', <?= $customer['ticket_count'] ?>)" class="btn btn-secondary btn-sm" style="background: #fee2e2; color: #991b1b;" title="Delete">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
+                                    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--light-text);">
+                                        <?= $search ? 'No customers found matching your search' : 'No customers found' ?>
                                     </td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            <?php else: ?>
+                                <?php foreach ($customers as $customer): ?>
+                                    <tr>
+                                        <td><strong>#<?= $customer['id'] ?></strong></td>
+                                        <td><?= htmlspecialchars($customer['name']) ?></td>
+                                        <td><?= htmlspecialchars($customer['email']) ?></td>
+                                        <td>
+                                            <span class="badge badge-info">
+                                                <?= $customer['ticket_count'] ?> tickets
+                                            </span>
+                                        </td>
+                                        <td><?= formatDate($customer['created_at'], 'M d, Y') ?></td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button onclick="viewCustomer(<?= $customer['id'] ?>)" class="btn btn-secondary btn-sm" title="View Details">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                                <button onclick="editCustomer(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>', '<?= htmlspecialchars($customer['email'], ENT_QUOTES) ?>')" class="btn btn-primary btn-sm" title="Edit">
+                                                    <i class="fa-solid fa-edit"></i>
+                                                </button>
+                                                <button onclick="resetPassword(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>')" class="btn btn-warning btn-sm" title="Reset Password">
+                                                    <i class="fa-solid fa-key"></i>
+                                                </button>
+                                                <a href="tickets.php?customer=<?= $customer['id'] ?>" class="btn btn-secondary btn-sm" title="View Tickets">
+                                                    <i class="fa-solid fa-ticket"></i>
+                                                </a>
+                                                <button onclick="deleteCustomer(<?= $customer['id'] ?>, '<?= htmlspecialchars($customer['name'], ENT_QUOTES) ?>', <?= $customer['ticket_count'] ?>)" class="btn btn-danger btn-sm" title="Delete">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
     <!-- View Customer Modal -->

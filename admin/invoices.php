@@ -37,25 +37,7 @@ $stmt = $conn->query($query);
 $invoices = $stmt->fetchAll();
 ?>
 
-<style>
-    /* Page specific styles */
-    .content-card { background: var(--white); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow-md); }
-    .table-container { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
-    th { font-weight: 600; color: var(--secondary-color); background: #f9fafb; }
-    tr:hover { background: #f9fafb; }
-    
-    .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-    .badge-success { background: #d1fae5; color: #065f46; }
-    .badge-warning { background: #fef3c7; color: #92400e; }
-    .badge-danger { background: #fee2e2; color: #991b1b; }
-    
-    .action-btn { padding: 0.5rem; border-radius: 4px; color: var(--text-color); transition: all 0.2s; }
-    .action-btn:hover { background: var(--bg-color); color: var(--primary-color); }
-    .action-btn.delete:hover { color: #ef4444; }
-    .action-btn.success:hover { color: #10b981; }
-</style>
+
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
     <h1 style="color: var(--secondary-color);">Invoices</h1>
@@ -71,8 +53,8 @@ $invoices = $stmt->fetchAll();
 <?php endif; ?>
 
 <div class="content-card">
-    <div class="table-container">
-        <table>
+    <div class="data-table-container">
+        <table class="data-table">
             <thead>
                 <tr>
                     <th>Invoice #</th>
@@ -96,7 +78,7 @@ $invoices = $stmt->fetchAll();
                         <tr>
                             <td style="font-weight: 500;">
                                 <a href="invoice-view.php?id=<?= $invoice['id'] ?>" style="color: var(--primary-color); text-decoration: none;">
-                                    <?= htmlspecialchars($invoice['invoice_number']) ?>
+                                     <?= htmlspecialchars($invoice['invoice_number']) ?>
                                 </a>
                             </td>
                             <td>
@@ -116,17 +98,17 @@ $invoices = $stmt->fetchAll();
                             <td><?= $invoice['due_date'] ? formatDate($invoice['due_date']) : '-' ?></td>
                             <td><?= formatDate($invoice['created_at']) ?></td>
                             <td>
-                                <a href="invoice-view.php?id=<?= $invoice['id'] ?>" class="action-btn" title="View">
+                                <a href="invoice-view.php?id=<?= $invoice['id'] ?>" class="btn btn-secondary btn-sm" title="View">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="invoice-editor.php?id=<?= $invoice['id'] ?>" class="action-btn" title="Edit">
+                                <a href="invoice-editor.php?id=<?= $invoice['id'] ?>" class="btn btn-primary btn-sm" title="Edit">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
                                 <?php if ($invoice['status'] === 'unpaid'): ?>
                                     <form method="POST" style="display: inline;" onsubmit="return confirm('Mark this invoice as paid?');">
                                         <?= csrfField() ?>
                                         <input type="hidden" name="mark_paid_id" value="<?= $invoice['id'] ?>">
-                                        <button type="submit" class="action-btn success" style="background: none; border: none; cursor: pointer;" title="Mark as Paid">
+                                        <button type="submit" class="btn btn-success btn-sm" title="Mark as Paid">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
                                     </form>
@@ -134,7 +116,7 @@ $invoices = $stmt->fetchAll();
                                 <form method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this invoice?');">
                                     <?= csrfField() ?>
                                     <input type="hidden" name="delete_id" value="<?= $invoice['id'] ?>">
-                                    <button type="submit" class="action-btn delete" style="background: none; border: none; cursor: pointer;" title="Delete">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Delete">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
