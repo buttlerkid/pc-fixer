@@ -437,7 +437,7 @@ body.dark-mode .author-info h4 {
     transform: scale(1.05) translateY(-10px);
 }
 
-.badge {
+.pricing-card .badge {
     position: absolute;
     top: -12px;
     left: 50%;
@@ -1794,4 +1794,67 @@ body.dark-mode .ticket-table th {
 .dashboard-nav .nav-links a.active {
     color: var(--primary-color);
     font-weight: 700;
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-trigger {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s;
+    white-space: nowrap;
+}
+
+.dropdown-trigger:hover,
+.dropdown-trigger.active {
+    color: var(--primary-color);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--white);
+    min-width: 220px;
+    width: max-content;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius);
+    padding: 0.5rem 0;
+    z-index: 1000;
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    color: var(--text-color);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+body.dark-mode .dropdown-content a:hover {
+    background-color: var(--table-hover-bg);
 }

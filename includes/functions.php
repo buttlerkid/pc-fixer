@@ -244,3 +244,59 @@ function sendEmail($to, $subject, $body) {
         return ['success' => false, 'message' => 'Failed to send email. Check logs.'];
     }
 }
+
+/**
+ * CMS Helper Functions
+ */
+
+
+function getSectionContent($section) {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->prepare("SELECT key_name, content_value FROM homepage_content WHERE section = ?");
+    $stmt->execute([$section]);
+    $results = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    return $results;
+}
+
+function getServices() {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->query("SELECT * FROM services ORDER BY display_order ASC");
+    return $stmt->fetchAll();
+}
+
+function getTestimonials() {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->query("SELECT * FROM testimonials ORDER BY display_order ASC");
+    return $stmt->fetchAll();
+}
+
+function getPricingPlans() {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->query("SELECT * FROM pricing_plans ORDER BY display_order ASC");
+    return $stmt->fetchAll();
+}
+
+function getFAQs() {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->query("SELECT * FROM faq ORDER BY display_order ASC");
+    return $stmt->fetchAll();
+}
+
+function getProcessSteps() {
+    $database = new Database();
+    $conn = $database->connect();
+    
+    $stmt = $conn->query("SELECT * FROM process_steps ORDER BY step_number ASC");
+    return $stmt->fetchAll();
+}
+

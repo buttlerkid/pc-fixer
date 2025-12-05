@@ -77,16 +77,33 @@ $kbArticles = $stmt->fetchAll();
         </div>
     </header>
 
+<?php
+// Fetch CMS Content
+$heroContent = getSectionContent('hero');
+$statsContent = getSectionContent('stats');
+$servicesContent = getSectionContent('services');
+$testimonialsContent = getSectionContent('testimonials');
+$pricingContent = getSectionContent('pricing');
+$faqContent = getSectionContent('faq');
+$processContent = getSectionContent('process');
+$contactContent = getSectionContent('contact');
+
+$services = getServices();
+$testimonials = getTestimonials();
+$pricingPlans = getPricingPlans();
+$faqs = getFAQs();
+$processSteps = getProcessSteps();
+?>
+
     <!-- Hero Section -->
     <section id="hero" class="hero">
         <div class="container hero-container">
             <div class="hero-content">
-                <h1>Fast & Reliable PC Repair in <span class="highlight">Your Town</span></h1>
-                <p>Don't let computer problems slow you down. I provide expert troubleshooting and repair services for
-                    desktops and laptops. Personal, local, and trusted.</p>
+                <h1><?= htmlspecialchars($heroContent['title_prefix'] ?? 'Fast & Reliable PC Repair in') ?> <span class="highlight"><?= htmlspecialchars($heroContent['title_highlight'] ?? 'Your Town') ?></span></h1>
+                <p><?= htmlspecialchars($heroContent['description'] ?? "Don't let computer problems slow you down. I provide expert troubleshooting and repair services for desktops and laptops. Personal, local, and trusted.") ?></p>
                 <div class="hero-buttons">
-                    <a href="#contact" class="btn btn-primary">Get a Quote</a>
-                    <a href="#services" class="btn btn-secondary">View Services</a>
+                    <a href="<?= htmlspecialchars($heroContent['btn_primary_link'] ?? '#contact') ?>" class="btn btn-primary"><?= htmlspecialchars($heroContent['btn_primary_text'] ?? 'Get a Quote') ?></a>
+                    <a href="<?= htmlspecialchars($heroContent['btn_secondary_link'] ?? '#services') ?>" class="btn btn-secondary"><?= htmlspecialchars($heroContent['btn_secondary_text'] ?? 'View Services') ?></a>
                 </div>
             </div>
             <div class="hero-image">
@@ -101,8 +118,8 @@ $kbArticles = $stmt->fetchAll();
     <section id="stats" class="stats section-padding bg-light">
         <div class="container">
             <div class="section-header">
-                <h2>Our Track Record</h2>
-                <p>Numbers that speak for themselves.</p>
+                <h2><?= htmlspecialchars($statsContent['header_title'] ?? 'Our Track Record') ?></h2>
+                <p><?= htmlspecialchars($statsContent['header_subtitle'] ?? 'Numbers that speak for themselves.') ?></p>
             </div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -141,42 +158,19 @@ $kbArticles = $stmt->fetchAll();
     <section id="services" class="services section-padding">
         <div class="container">
             <div class="section-header">
-                <h2>My Services</h2>
-                <p>Comprehensive solutions for your hardware and software needs.</p>
+                <h2><?= htmlspecialchars($servicesContent['header_title'] ?? 'My Services') ?></h2>
+                <p><?= htmlspecialchars($servicesContent['header_subtitle'] ?? 'Comprehensive solutions for your hardware and software needs.') ?></p>
             </div>
             <div class="services-grid">
+                <?php foreach ($services as $service): ?>
                 <div class="service-card">
                     <div class="icon-box">
-                        <i class="fa-solid fa-laptop-medical"></i>
+                        <i class="<?= htmlspecialchars($service['icon']) ?>"></i>
                     </div>
-                    <h3>Hardware Repair</h3>
-                    <p>Screen replacements, battery swaps, keyboard fixes, and component upgrades for laptops and
-                        desktops.</p>
+                    <h3><?= htmlspecialchars($service['title']) ?></h3>
+                    <p><?= htmlspecialchars($service['description']) ?></p>
                 </div>
-                <div class="service-card">
-                    <div class="icon-box">
-                        <i class="fa-brands fa-windows"></i>
-                    </div>
-                    <h3>Software Troubleshooting</h3>
-                    <p>OS installation, virus removal, driver issues, and performance optimization to make your PC run
-                        like new.</p>
-                </div>
-                <div class="service-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-network-wired"></i>
-                    </div>
-                    <h3>Network Setup</h3>
-                    <p>Wi-Fi configuration, router setup, and connectivity troubleshooting for your home or small
-                        office.</p>
-                </div>
-                <div class="service-card">
-                    <div class="icon-box">
-                        <i class="fa-solid fa-database"></i>
-                    </div>
-                    <h3>Data Recovery</h3>
-                    <p>Recover lost files from failing hard drives or accidental deletions. Backup solutions also
-                        available.</p>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -185,61 +179,30 @@ $kbArticles = $stmt->fetchAll();
     <section id="testimonials" class="testimonials section-padding bg-light">
         <div class="container">
             <div class="section-header">
-                <h2>What Clients Say</h2>
-                <p>Trusted by neighbors and local businesses.</p>
+                <h2><?= htmlspecialchars($testimonialsContent['header_title'] ?? 'What Clients Say') ?></h2>
+                <p><?= htmlspecialchars($testimonialsContent['header_subtitle'] ?? 'Trusted by neighbors and local businesses.') ?></p>
             </div>
             <div class="testimonials-grid">
+                <?php foreach ($testimonials as $testimonial): ?>
                 <div class="testimonial-card">
                     <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+                        <?php for ($i = 0; $i < 5; $i++): ?>
+                            <?php if ($i < $testimonial['rating']): ?>
+                                <i class="fa-solid fa-star"></i>
+                            <?php else: ?>
+                                <i class="fa-regular fa-star"></i>
+                            <?php endif; ?>
+                        <?php endfor; ?>
                     </div>
-                    <p class="quote">"Fixed my laptop screen in 24 hours! Saved me from buying a new computer. Highly
-                        recommended!"</p>
+                    <p class="quote">"<?= htmlspecialchars($testimonial['content']) ?>"</p>
                     <div class="author">
                         <div class="author-info">
-                            <h4>Sarah J.</h4>
-                            <span>Local Resident</span>
+                            <h4><?= htmlspecialchars($testimonial['name']) ?></h4>
+                            <span><?= htmlspecialchars($testimonial['role']) ?></span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="quote">"My PC was running so slow I couldn't work. After the tune-up, it's like a brand
-                        new machine."</p>
-                    <div class="author">
-                        <div class="author-info">
-                            <h4>Mike T.</h4>
-                            <span>Small Business Owner</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <div class="stars">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star-half-stroke"></i>
-                    </div>
-                    <p class="quote">"Super friendly and explained everything in plain English. No tech jargon, just
-                        results."</p>
-                    <div class="author">
-                        <div class="author-info">
-                            <h4>Emily R.</h4>
-                            <span>Teacher</span>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -248,53 +211,31 @@ $kbArticles = $stmt->fetchAll();
     <section id="pricing" class="pricing section-padding">
         <div class="container">
             <div class="section-header">
-                <h2>Transparent Pricing</h2>
-                <p>No hidden fees. You know what you pay.</p>
+                <h2><?= htmlspecialchars($pricingContent['header_title'] ?? 'Transparent Pricing') ?></h2>
+                <p><?= htmlspecialchars($pricingContent['header_subtitle'] ?? 'No hidden fees. You know what you pay.') ?></p>
             </div>
             <div class="pricing-wrapper">
-                <div class="pricing-card">
+                <?php foreach ($pricingPlans as $plan): ?>
+                <div class="pricing-card <?= $plan['is_popular'] ? 'popular' : '' ?>">
+                    <?php if ($plan['is_popular']): ?>
+                        <div class="badge">Most Popular</div>
+                    <?php endif; ?>
                     <div class="pricing-header">
-                        <h3>Diagnostics</h3>
-                        <div class="price">Free*</div>
-                        <p>with any repair service</p>
+                        <h3><?= htmlspecialchars($plan['name']) ?></h3>
+                        <div class="price"><?= htmlspecialchars($plan['price']) ?></div>
+                        <p><?= htmlspecialchars($plan['frequency']) ?></p>
                     </div>
                     <ul class="pricing-features">
-                        <li><i class="fa-solid fa-check"></i> Full Hardware Scan</li>
-                        <li><i class="fa-solid fa-check"></i> Software Analysis</li>
-                        <li><i class="fa-solid fa-check"></i> No Obligation Quote</li>
+                        <?php 
+                        $features = json_decode($plan['features'], true) ?? [];
+                        foreach ($features as $feature): 
+                        ?>
+                        <li><i class="fa-solid fa-check"></i> <?= htmlspecialchars($feature) ?></li>
+                        <?php endforeach; ?>
                     </ul>
-                    <a href="#contact" class="btn btn-secondary btn-block">Book Now</a>
-                    <p class="pricing-note">* $40 fee if no repair is performed.</p>
+                    <a href="#contact" class="btn <?= $plan['is_popular'] ? 'btn-primary' : 'btn-secondary' ?> btn-block"><?= htmlspecialchars($plan['cta_text']) ?></a>
                 </div>
-                <div class="pricing-card popular">
-                    <div class="badge">Most Popular</div>
-                    <div class="pricing-header">
-                        <h3>Virus Removal</h3>
-                        <div class="price">$89</div>
-                        <p>Flat rate</p>
-                    </div>
-                    <ul class="pricing-features">
-                        <li><i class="fa-solid fa-check"></i> Deep System Clean</li>
-                        <li><i class="fa-solid fa-check"></i> Malware Removal</li>
-                        <li><i class="fa-solid fa-check"></i> Antivirus Installation</li>
-                        <li><i class="fa-solid fa-check"></i> Performance Tune-up</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-primary btn-block">Book Now</a>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3>System Setup</h3>
-                        <div class="price">$120</div>
-                        <p>Starting at</p>
-                    </div>
-                    <ul class="pricing-features">
-                        <li><i class="fa-solid fa-check"></i> New PC Setup</li>
-                        <li><i class="fa-solid fa-check"></i> Data Transfer</li>
-                        <li><i class="fa-solid fa-check"></i> Printer & WiFi Setup</li>
-                        <li><i class="fa-solid fa-check"></i> Email Configuration</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-secondary btn-block">Book Now</a>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -335,50 +276,21 @@ $kbArticles = $stmt->fetchAll();
     <section id="faq" class="faq section-padding bg-light">
         <div class="container">
             <div class="section-header">
-                <h2>Frequently Asked Questions</h2>
-                <p>Common questions about my services.</p>
+                <h2><?= htmlspecialchars($faqContent['header_title'] ?? 'Frequently Asked Questions') ?></h2>
+                <p><?= htmlspecialchars($faqContent['header_subtitle'] ?? 'Common questions about my services.') ?></p>
             </div>
             <div class="faq-container">
+                <?php foreach ($faqs as $faq): ?>
                 <div class="faq-item">
                     <button class="faq-question">
-                        Do you come to my house?
+                        <?= htmlspecialchars($faq['question']) ?>
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="faq-answer">
-                        <p>Yes! I offer mobile services within a 15-mile radius. For more complex hardware repairs, I
-                            may need to take the device to my workshop and return it once fixed.</p>
+                        <p><?= htmlspecialchars($faq['answer']) ?></p>
                     </div>
                 </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        How long do repairs usually take?
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Most software issues and standard hardware replacements are completed within 24-48 hours.
-                            Special order parts may take a few days to arrive.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        Is there a warranty on repairs?
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>Absolutely. I offer a 30-day warranty on all labor and pass through the manufacturer's
-                            warranty on any new parts installed.</p>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <button class="faq-question">
-                        What if you can't fix it?
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </button>
-                    <div class="faq-answer">
-                        <p>If I can't fix the issue, you don't pay for the repair. A small diagnostic fee may still
-                            apply depending on the time spent investigating.</p>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
@@ -387,30 +299,17 @@ $kbArticles = $stmt->fetchAll();
     <section id="process" class="process section-padding">
         <div class="container">
             <div class="section-header">
-                <h2>How It Works</h2>
-                <p>Simple, transparent, and convenient service.</p>
+                <h2><?= htmlspecialchars($processContent['header_title'] ?? 'How It Works') ?></h2>
+                <p><?= htmlspecialchars($processContent['header_subtitle'] ?? 'Simple, transparent, and convenient service.') ?></p>
             </div>
             <div class="process-steps">
+                <?php foreach ($processSteps as $step): ?>
                 <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Contact Me</h3>
-                    <p>Fill out the form below or call to describe your issue.</p>
+                    <div class="step-number"><?= $step['step_number'] ?></div>
+                    <h3><?= htmlspecialchars($step['title']) ?></h3>
+                    <p><?= htmlspecialchars($step['description']) ?></p>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Diagnosis</h3>
-                    <p>We meet locally or I come to you to diagnose the problem.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Repair</h3>
-                    <p>I fix the issue efficiently and keep you updated.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <h3>Done!</h3>
-                    <p>You get your device back in working order. Satisfaction guaranteed.</p>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </section>
