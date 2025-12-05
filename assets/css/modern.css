@@ -802,11 +802,7 @@ body.dark-mode .form-group label {
 .fab i {
     margin: 0;
     padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 4px;
-    /* Manually nudge down */
+    line-height: 1;
 }
 
 /* Customer Dashboard & Tickets */
